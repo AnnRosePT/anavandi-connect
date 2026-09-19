@@ -1,0 +1,49 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html, body {
+    margin: 0;
+    padding: 0;
+    background-color: #fff8f5;
+    color: #211a15;
+    font-family: "Work Sans", sans-serif;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-family: "Epilogue", sans-serif;
+  }
+
+  code, pre, .font-mono {
+    font-family: "JetBrains Mono", monospace;
+  }
+}
+
+/* Custom scrollbar for data tables and scan canvas */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: #faebe3;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #8e706d;
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #950913;
+}
+
+/* Leaflet Container styling */
+.leaflet-container {
+  width: 100%;
+  height: 100%;
+  background-color: #fff8f5;
+  font-family: "Work Sans", sans-serif;
+  z-index: 10;
+}

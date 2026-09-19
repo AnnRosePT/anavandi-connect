@@ -1,0 +1,535 @@
+<!DOCTYPE html>
+
+<html lang="en"><head><meta charset="utf-8"/><meta content="width=device-width, initial-scale=1.0" name="viewport"/><link href="https://fonts.googleapis.com/css2?family=Epilogue:wght@600;700;800&amp;family=Work+Sans:wght@400;500;600&amp;family=JetBrains+Mono:wght@500;600&amp;display=swap" rel="stylesheet"/><link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/><style>@layer base{html,body{margin:0;padding:0;}body{overscroll-behavior:none;}main>:first-child{margin-top:0!important;}main>:last-child{margin-bottom:0!important;}}::-webkit-scrollbar{display:none;}</style><script src="https://cdn.tailwindcss.com"></script><script id="tailwind-config">tailwind.config={darkMode:"class",theme:{extend:{"colors":{"on-surface-variant":"#5a403e","primary-fixed-dim":"#ffb3ac","on-primary-container":"#ffd2cd","surface-tint":"#b52526","on-background":"#211a15","on-secondary-fixed":"#281900","primary-fixed":"#ffdad6","inverse-primary":"#ffb3ac","tertiary-fixed-dim":"#ffb77a","surface-container-high":"#f4e5dd","on-error":"#ffffff","tertiary":"#703c00","secondary-container":"#fdb72f","tertiary-fixed":"#ffdcc2","on-primary-fixed":"#410003","surface-variant":"#efe0d8","on-tertiary-fixed":"#2e1500","on-primary":"#ffffff","surface-dim":"#e6d7cf","on-secondary":"#ffffff","on-tertiary-fixed-variant":"#6d3a00","secondary-fixed":"#ffdeac","primary-container":"#b82828","surface":"#fff8f5","surface-bright":"#fff8f5","error-container":"#ffdad6","background":"#fff8f5","surface-container":"#faebe3","tertiary-container":"#925000","on-error-container":"#93000a","inverse-on-surface":"#fdeee6","inverse-surface":"#372f29","outline-variant":"#e2bebb","on-secondary-fixed-variant":"#604100","secondary":"#7e5700","surface-container-lowest":"#ffffff","secondary-fixed-dim":"#ffba38","primary":"#950913","surface-container-highest":"#efe0d8","on-primary-fixed-variant":"#920511","on-tertiary-container":"#ffd4b3","surface-container-low":"#fff1ea","outline":"#8e706d","on-surface":"#211a15","error":"#ba1a1a","on-tertiary":"#ffffff","on-secondary-container":"#6c4a00"},"borderRadius":{"DEFAULT":"0.125rem","lg":"0.25rem","xl":"0.5rem","full":"0.75rem"},"spacing":{"margin-mobile":"1rem","space-xs":"0.25rem","space-lg":"1.5rem","space-sm":"0.5rem","margin":"2rem","space-xl":"2.5rem","gutter-mobile":"0.75rem","space-md":"1rem","gutter":"1.25rem"},"fontFamily":{"headline-sm":["Epilogue"],"label-lg":["JetBrains Mono"],"label-md":["JetBrains Mono"],"headline-lg":["Epilogue"],"display-lg-mobile":["Epilogue"],"display-lg":["Epilogue"],"headline-lg-mobile":["Epilogue"],"body-md":["Work Sans"],"title-md":["Work Sans"],"body-lg":["Work Sans"],"headline-md":["Epilogue"]},"fontSize":{"headline-sm":["20px",{"lineHeight":"28px","fontWeight":"600"}],"label-lg":["13px",{"lineHeight":"18px","letterSpacing":"0.04em","fontWeight":"600"}],"label-md":["11px",{"lineHeight":"16px","letterSpacing":"0.06em","fontWeight":"500"}],"headline-lg":["32px",{"lineHeight":"40px","letterSpacing":"-0.01em","fontWeight":"700"}],"display-lg-mobile":["36px",{"lineHeight":"44px","letterSpacing":"-0.01em","fontWeight":"800"}],"display-lg":["48px",{"lineHeight":"56px","letterSpacing":"-0.02em","fontWeight":"800"}],"headline-lg-mobile":["26px",{"lineHeight":"34px","letterSpacing":"0","fontWeight":"700"}],"body-md":["14px",{"lineHeight":"20px","fontWeight":"400"}],"title-md":["18px",{"lineHeight":"26px","fontWeight":"600"}],"body-lg":["16px",{"lineHeight":"24px","fontWeight":"400"}],"headline-md":["24px",{"lineHeight":"32px","fontWeight":"700"}]}}}}</script></head><body class="bg-background font-body-md text-body-md text-on-surface"><aside class="fixed left-0 top-0 h-full w-72 bg-surface-container-low z-50 flex flex-col shadow-[0_1px_8px_rgba(0,0,0,0.04)]"><div class="h-16 px-space-md flex items-center gap-space-sm bg-surface-container"><img alt="AnaVandi Logo" class="w-9 h-9 rounded-lg object-cover shadow-sm" src="https://lh3.googleusercontent.com/aida/AEtjO1Vw29XE2O48DS7-9lHzN2d9ogjlGjJG0inDLE4dEsDjHmJiJuFpwCDLY6DzEZY4_sS_bUwY68QXlCyMpI-7sVVLdq-ognOQpefBO6zWvASGvJl1QT2nT6OoywKyTKaxm6Zla16hThDeAjtNZ6hPNFwEjKdeUrlIGeZ-ZGSKWI2NRFqcR-J7vRxBPjtdJODOXxCUINKPQZ1afw9gXApyyJ3H1KkfHFjC_tzrjF0cIEUmKzd-9gDhFzG9kk-jo4ga6uRkRFWAvCY0zA"/><div class="flex flex-col"><span class="font-headline-sm text-headline-sm text-primary tracking-tight leading-none">AnaVandi</span><span class="font-label-md text-label-md uppercase tracking-wider text-secondary">Transit Connect</span></div></div><div class="px-space-md py-space-sm bg-secondary-container/20 flex items-center justify-between"><span class="font-label-md text-label-md uppercase text-on-secondary-container font-semibold tracking-wider">Depot Control Desk</span><span class="font-label-md text-label-md px-space-xs py-0.5 bg-secondary text-on-secondary rounded">RTC-KL</span></div><nav class="flex-1 px-space-sm py-space-md space-y-1 overflow-y-auto" data-active-classes="bg-primary-container text-on-primary font-medium rounded-lg"><a class="flex items-center gap-space-sm px-space-md py-space-sm rounded-lg text-on-surface-variant hover:bg-surface-container hover:text-on-surface transition-colors" data-path="dashboard" href="#"><span class="material-symbols-outlined text-primary">dashboard</span><span class="font-body-md text-body-md">Dashboard</span></a><a aria-current="page" class="flex items-center gap-space-sm px-space-md py-space-sm transition-colors bg-primary-container text-on-primary font-medium rounded-lg" data-path="search-buses" href="#"><span class="material-symbols-outlined text-primary">directions_bus</span><span class="font-body-md text-body-md">Search Buses</span></a><a class="flex items-center gap-space-sm px-space-md py-space-sm rounded-lg text-on-surface-variant hover:bg-surface-container hover:text-on-surface transition-colors" data-path="upload-timetable" href="#"><span class="material-symbols-outlined text-primary">upload_file</span><span class="font-body-md text-body-md">Upload Timetable</span></a><a class="flex items-center justify-between px-space-md py-space-sm rounded-lg text-on-surface-variant hover:bg-surface-container hover:text-on-surface transition-colors" data-path="verification-queue" href="#"><div class="flex items-center gap-space-sm"><span class="material-symbols-outlined text-primary">fact_check</span><span class="font-body-md text-body-md">Verification Queue</span></div><span class="px-space-xs py-0.5 font-label-md text-label-md bg-secondary text-on-secondary rounded font-bold">7 Pending</span></a><a class="flex items-center gap-space-sm px-space-md py-space-sm rounded-lg text-on-surface-variant hover:bg-surface-container hover:text-on-surface transition-colors" data-path="timetable-library" href="#"><span class="material-symbols-outlined text-primary">menu_book</span><span class="font-body-md text-body-md">Timetable Library</span></a><a class="flex items-center gap-space-sm px-space-md py-space-sm rounded-lg text-on-surface-variant hover:bg-surface-container hover:text-on-surface transition-colors" data-path="routes-and-stops" href="#"><span class="material-symbols-outlined text-primary">alt_route</span><span class="font-body-md text-body-md">Routes &amp; Stops</span></a><a class="flex items-center gap-space-sm px-space-md py-space-sm rounded-lg text-on-surface-variant hover:bg-surface-container hover:text-on-surface transition-colors" data-path="map" href="#"><span class="material-symbols-outlined text-primary">map</span><span class="font-body-md text-body-md">Map</span></a><a class="flex items-center gap-space-sm px-space-md py-space-sm rounded-lg text-on-surface-variant hover:bg-surface-container hover:text-on-surface transition-colors" data-path="ai-search" href="#"><span class="material-symbols-outlined text-primary">psychology</span><span class="font-body-md text-body-md">AI Search</span></a><a class="flex items-center gap-space-sm px-space-md py-space-sm rounded-lg text-on-surface-variant hover:bg-surface-container hover:text-on-surface transition-colors" data-path="analytics" href="#"><span class="material-symbols-outlined text-primary">query_stats</span><span class="font-body-md text-body-md">Analytics</span></a><a class="flex items-center gap-space-sm px-space-md py-space-sm rounded-lg text-on-surface-variant hover:bg-surface-container hover:text-on-surface transition-colors" data-path="settings" href="#"><span class="material-symbols-outlined text-primary">settings</span><span class="font-body-md text-body-md">Settings</span></a></nav><div class="p-space-md bg-surface-container mt-auto"><div class="p-space-sm rounded-lg bg-surface-container-lowest shadow-[0_1px_8px_rgba(0,0,0,0.04)]"><div class="flex items-center justify-between mb-1"><span class="font-label-md text-label-md text-on-surface-variant font-semibold uppercase">Fleet Engine</span><span class="font-label-md text-label-md text-primary font-bold">v2.4</span></div><div class="flex items-center gap-1.5"><span class="w-2 h-2 rounded-full bg-secondary-container animate-pulse"></span><span class="font-label-md text-label-md text-on-surface">State Transport Grid</span></div></div></div></aside><div class="pl-72 min-h-screen flex flex-col"><header class="fixed top-0 left-72 right-0 h-16 bg-surface/85 backdrop-blur-xl shadow-[0_1px_8px_rgba(0,0,0,0.04)] z-40 flex items-center justify-between px-space-lg"><div class="flex items-center gap-space-md flex-1 max-w-lg"><div class="relative w-full flex items-center"><span class="material-symbols-outlined absolute left-3 text-on-surface-variant text-sm">search</span><input class="w-full pl-9 pr-space-md py-2 bg-surface-container rounded-lg text-on-surface placeholder:text-on-surface-variant font-body-md text-body-md focus:outline-none focus:ring-1 focus:ring-primary" placeholder="Search buses, schedules, depots, conductors..." type="text"/></div></div><div class="flex items-center gap-space-md"><div class="flex items-center gap-space-xs px-space-sm py-1 rounded bg-secondary-container/20"><span class="w-2 h-2 rounded-full bg-secondary animate-ping"></span><span class="font-label-md text-label-md uppercase font-semibold text-secondary">GTFS Sync: Live</span></div><button class="flex items-center gap-1 px-space-sm py-1 bg-surface-container rounded font-label-md text-label-md text-on-surface-variant hover:text-on-surface transition-colors"><span class="font-bold text-primary">EN</span><span class="text-outline">|</span><span>മലയാളം</span></button><button class="relative p-1.5 rounded-lg hover:bg-surface-container text-on-surface-variant hover:text-on-surface transition-colors"><span class="material-symbols-outlined">notifications</span><span class="absolute top-1 right-1 w-2 h-2 rounded-full bg-primary"></span></button><div class="flex items-center gap-space-sm pl-space-xs"><img alt="Profile" class="w-8 h-8 rounded-full object-cover shadow-sm" src="https://lh3.googleusercontent.com/aida/AEtjO1Vw29XE2O48DS7-9lHzN2d9ogjlGjJG0inDLE4dEsDjHmJiJuFpwCDLY6DzEZY4_sS_bUwY68QXlCyMpI-7sVVLdq-ognOQpefBO6zWvASGvJl1QT2nT6OoywKyTKaxm6Zla16hThDeAjtNZ6hPNFwEjKdeUrlIGeZ-ZGSKWI2NRFqcR-J7vRxBPjtdJODOXxCUINKPQZ1afw9gXApyyJ3H1KkfHFjC_tzrjF0cIEUmKzd-9gDhFzG9kk-jo4ga6uRkRFWAvCY0zA"/><div class="hidden xl:flex flex-col text-left"><span class="font-title-md text-label-lg font-bold leading-tight text-on-surface">Depot Officer</span><span class="font-label-md text-label-md text-on-surface-variant">Trivandrum Central</span></div></div></div></header><main class="w-full px-space-lg pt-16 flex-1 bg-background"><div class="flex flex-col w-full pb-space-xl">
+<!-- Top Heritage Notification Banner -->
+<div class="mb-space-md bg-secondary-container/30 px-space-md py-space-xs rounded-xl flex items-center justify-between shadow-sm">
+<div class="flex items-center gap-space-sm">
+<span class="material-symbols-outlined text-primary text-xl">verified</span>
+<p class="font-label-md text-label-md text-on-surface font-semibold tracking-wide">
+        Depot Operational Dispatch: Thampanoor (TVM) &amp; Kannur (CAN) computerized control sheet synchronized today at 05:40 AM.
+      </p>
+</div>
+<div class="flex items-center gap-space-xs">
+<span class="w-2 h-2 rounded-full bg-primary animate-ping"></span>
+<span class="font-label-md text-label-md uppercase tracking-wider text-primary font-bold">18 Running Services</span>
+</div>
+</div>
+<!-- Search Hero Widget Panel -->
+<section class="relative w-full bg-surface-container-low rounded-xl shadow-md p-space-lg overflow-hidden mb-space-xl">
+<!-- Atmospheric KSRTC Golden Gradient Hue -->
+<div class="absolute -right-24 -bottom-24 w-96 h-96 rounded-full bg-secondary-container/20 blur-3xl pointer-events-none"></div>
+<div class="absolute -left-12 -top-12 w-64 h-64 rounded-full bg-primary/10 blur-2xl pointer-events-none"></div>
+<div class="relative z-10 flex flex-col xl:flex-row gap-space-lg justify-between items-start xl:items-center mb-space-lg">
+<div>
+<div class="flex items-center gap-space-xs mb-1">
+<span class="px-space-xs py-0.5 bg-primary text-on-primary rounded font-label-md text-label-md uppercase tracking-wider font-bold">
+            Aana Vandi State Transit
+          </span>
+<span class="font-label-md text-label-md text-secondary font-semibold uppercase tracking-wider">
+            Kerala RTC Fleet Grid
+          </span>
+</div>
+<h1 class="font-headline-lg text-headline-lg text-primary tracking-tight font-extrabold flex items-baseline gap-space-sm flex-wrap">
+          Where do you want to go?
+          <span class="font-body-lg text-title-md text-on-surface-variant font-normal tracking-normal">
+            (എവിടേക്കാണ് പോകേണ്ടത്?)
+          </span>
+</h1>
+</div>
+<!-- Live Time Indicator -->
+<div class="bg-surface-container px-space-md py-space-sm rounded-lg flex items-center gap-space-sm self-stretch xl:self-auto justify-between shadow-sm">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-secondary text-lg">departure_board</span>
+<span class="font-label-md text-label-md uppercase text-on-surface-variant font-bold">Thampanoor Master Clock</span>
+</div>
+<span class="font-label-lg text-label-lg font-bold text-primary">06:14:28 IST</span>
+</div>
+</div>
+<!-- Search Inputs Row -->
+<form class="relative z-10 grid grid-cols-1 md:grid-cols-12 gap-space-sm items-center">
+<!-- FROM Input -->
+<div class="md:col-span-4 bg-surface-container-lowest p-space-sm rounded-lg shadow-sm focus-within:ring-2 focus-within:ring-primary transition-all">
+<label class="block font-label-md text-label-md uppercase tracking-wider text-on-surface-variant font-bold mb-0.5 flex items-center justify-between">
+<span>Boarding Origin (പുറപ്പെടുന്ന സ്ഥലം)</span>
+<span class="material-symbols-outlined text-primary text-sm">trip_origin</span>
+</label>
+<div class="flex items-center gap-space-xs">
+<input class="w-full bg-transparent font-title-md text-title-md text-on-surface font-semibold focus:outline-none placeholder:text-outline truncate" placeholder="Search Origin Depot..." type="text" value="Trivandrum (തമ്പാനൂർ - Thampanoor)"/>
+</div>
+</div>
+<!-- Swap Icon Button -->
+<div class="hidden md:flex md:col-span-1 justify-center -mx-4 z-20">
+<button aria-label="Interchange Locations" class="w-10 h-10 rounded-full bg-secondary-container hover:bg-secondary-fixed text-on-secondary-container shadow-md flex items-center justify-center transition-transform hover:rotate-180" type="button">
+<span class="material-symbols-outlined text-base font-bold">swap_horiz</span>
+</button>
+</div>
+<!-- TO Input -->
+<div class="md:col-span-4 bg-surface-container-lowest p-space-sm rounded-lg shadow-sm focus-within:ring-2 focus-within:ring-primary transition-all">
+<label class="block font-label-md text-label-md uppercase tracking-wider text-on-surface-variant font-bold mb-0.5 flex items-center justify-between">
+<span>Destination (എത്തിച്ചേരേണ്ട സ്ഥലം)</span>
+<span class="material-symbols-outlined text-secondary text-sm">location_on</span>
+</label>
+<div class="flex items-center gap-space-xs">
+<input class="w-full bg-transparent font-title-md text-title-md text-on-surface font-semibold focus:outline-none placeholder:text-outline truncate" placeholder="Search Destination Depot..." type="text" value="Kannur (കണ്ണൂർ Old Bus Stand)"/>
+</div>
+</div>
+<!-- Journey Date -->
+<div class="md:col-span-3 bg-surface-container-lowest p-space-sm rounded-lg shadow-sm focus-within:ring-2 focus-within:ring-primary transition-all">
+<label class="block font-label-md text-label-md uppercase tracking-wider text-on-surface-variant font-bold mb-0.5 flex items-center justify-between">
+<span>Travel Date (തീയതി)</span>
+<span class="material-symbols-outlined text-primary text-sm">calendar_month</span>
+</label>
+<div class="flex items-center gap-space-xs">
+<input class="w-full bg-transparent font-title-md text-title-md text-on-surface font-semibold focus:outline-none truncate" type="text" value="Today, 24 Oct"/>
+</div>
+</div>
+<!-- Filter Badges / Service Classes -->
+<div class="md:col-span-9 flex flex-wrap items-center gap-space-xs pt-space-xs">
+<span class="font-label-md text-label-md uppercase tracking-wider text-on-surface-variant font-bold mr-1">Service Class:</span>
+<button class="px-space-sm py-1 rounded bg-primary text-on-primary font-label-md text-label-md font-bold shadow-sm flex items-center gap-1" type="button">
+<span class="material-symbols-outlined text-xs">tune</span> All Types
+        </button>
+<button class="px-space-sm py-1 rounded bg-secondary-container text-on-secondary-container hover:bg-secondary-fixed font-label-md text-label-md font-bold shadow-sm flex items-center gap-1" type="button">
+<span>Super Fast</span>
+<span class="opacity-70">(സൂപ്പർ ഫാസ്റ്റ്)</span>
+</button>
+<button class="px-space-sm py-1 rounded bg-surface-container text-on-surface hover:bg-surface-variant font-label-md text-label-md font-bold shadow-sm flex items-center gap-1" type="button">
+<span>Fast Passenger</span>
+<span class="opacity-70">(FP)</span>
+</button>
+<button class="px-space-sm py-1 rounded bg-primary-container text-on-primary font-label-md text-label-md font-bold shadow-sm flex items-center gap-1" type="button">
+<span class="material-symbols-outlined text-xs">bolt</span>
+<span>Minnal</span>
+<span class="opacity-80">(മിന്നൽ)</span>
+</button>
+<button class="px-space-sm py-1 rounded bg-surface-container text-on-surface hover:bg-surface-variant font-label-md text-label-md font-bold shadow-sm" type="button">
+          Express (SFX)
+        </button>
+</div>
+<!-- Find Buses Action Button -->
+<div class="md:col-span-3 pt-space-xs">
+<button class="w-full py-3 px-space-md rounded bg-secondary-container hover:bg-secondary-fixed text-on-secondary-container font-headline-sm text-headline-sm uppercase tracking-wide font-extrabold shadow-md flex items-center justify-center gap-space-xs transition-all active:translate-y-0.5" type="submit">
+<span class="material-symbols-outlined text-xl">directions_bus</span>
+<span>Find Buses</span>
+</button>
+</div>
+</form>
+<!-- Popular Trunk Routes Quick Pills -->
+<div class="relative z-10 mt-space-md pt-space-sm border-t-0 flex flex-wrap items-center gap-space-xs">
+<span class="font-label-md text-label-md text-secondary uppercase font-bold tracking-wider mr-1">Popular Trunk Routes:</span>
+<a class="px-space-sm py-0.5 rounded bg-surface-container hover:bg-surface-container-high text-on-surface font-label-md text-label-md transition-colors flex items-center gap-1" href="#">
+<span>Trivandrum → Kanyakumari</span>
+<span class="text-primary font-bold">87 km</span>
+</a>
+<a class="px-space-sm py-0.5 rounded bg-surface-container hover:bg-surface-container-high text-on-surface font-label-md text-label-md transition-colors flex items-center gap-1" href="#">
+<span>Trivandrum → Kochi</span>
+<span class="text-primary font-bold">206 km</span>
+</a>
+<a class="px-space-sm py-0.5 rounded bg-surface-container hover:bg-surface-container-high text-on-surface font-label-md text-label-md transition-colors flex items-center gap-1" href="#">
+<span>Trivandrum → Munnar</span>
+<span class="text-primary font-bold">278 km</span>
+</a>
+<a class="px-space-sm py-0.5 rounded bg-surface-container hover:bg-surface-container-high text-on-surface font-label-md text-label-md transition-colors flex items-center gap-1" href="#">
+<span>Trivandrum → Palakkad</span>
+<span class="text-primary font-bold">342 km</span>
+</a>
+<a class="px-space-sm py-0.5 rounded bg-secondary-container/30 text-on-secondary-container font-label-md text-label-md font-bold transition-colors flex items-center gap-1" href="#">
+<span>Trivandrum → Kannur</span>
+<span class="text-primary font-extrabold">478 km</span>
+</a>
+</div>
+</section>
+<!-- Results Section -->
+<section class="w-full flex flex-col gap-space-md">
+<!-- Header With Counter & Visual Sorting -->
+<div class="flex flex-col md:flex-row md:items-center justify-between gap-space-sm bg-surface-container-low px-space-md py-space-sm rounded-lg shadow-sm">
+<div class="flex items-center gap-space-sm">
+<div class="w-10 h-10 rounded bg-primary text-on-primary flex items-center justify-center font-headline-sm text-headline-sm font-bold">
+          18
+        </div>
+<div>
+<h2 class="font-headline-md text-headline-md text-on-surface font-bold tracking-tight">
+            Buses from Trivandrum to Kannur
+          </h2>
+<p class="font-label-md text-label-md text-on-surface-variant">
+            Verified against Thampanoor Control Cell &amp; Kannur Depot Waybill logs
+          </p>
+</div>
+</div>
+<!-- Quick Sorting Bar -->
+<div class="flex items-center gap-space-xs bg-surface-container px-space-xs py-1 rounded">
+<span class="font-label-md text-label-md text-on-surface-variant uppercase font-semibold px-2">Sort:</span>
+<button class="px-space-sm py-0.5 rounded bg-surface-container-lowest text-primary font-label-md text-label-md font-bold shadow-sm">Departure</button>
+<button class="px-space-sm py-0.5 rounded hover:bg-surface-container-lowest text-on-surface font-label-md text-label-md">Duration</button>
+<button class="px-space-sm py-0.5 rounded hover:bg-surface-container-lowest text-on-surface font-label-md text-label-md">Fare</button>
+</div>
+</div>
+<!-- Bus Result Cards Grid / List -->
+<div class="flex flex-col gap-space-md">
+<!-- CARD 1: SUPER FAST (SF-104) -->
+<article class="relative bg-surface-container-lowest rounded-xl shadow-md hover:shadow-lg transition-all overflow-hidden flex flex-col xl:flex-row">
+<!-- Left Yellow Heritage Accent Ribbon -->
+<div class="w-full xl:w-2 bg-secondary-container h-2 xl:h-auto"></div>
+<!-- Left / Top Header Block -->
+<div class="p-space-md xl:w-80 bg-surface-container-low flex flex-col justify-between">
+<div>
+<div class="flex items-center justify-between gap-space-xs mb-2">
+<span class="px-space-xs py-0.5 rounded bg-primary text-on-primary font-label-md text-label-md font-bold tracking-wider uppercase">
+                Super Fast
+              </span>
+<span class="font-label-md text-label-md text-secondary font-bold uppercase tracking-wider">
+                സൂപ്പർ ഫാസ്റ്റ്
+              </span>
+</div>
+<div class="flex items-center gap-space-xs mb-1">
+<span class="font-headline-sm text-headline-sm font-extrabold text-on-surface">#SF-104</span>
+<span class="px-space-xs py-0.5 rounded bg-secondary-container/40 text-on-secondary-container font-label-md text-label-md font-semibold">
+                Ashok Leyland 12M
+              </span>
+</div>
+<p class="font-label-md text-label-md text-on-surface-variant font-medium">
+              Depot: Thampanoor Fast Unit
+            </p>
+</div>
+<div class="mt-space-md pt-space-sm bg-surface-container/50 p-space-xs rounded">
+<div class="flex items-center justify-between mb-1">
+<span class="font-label-md text-label-md text-on-surface-variant uppercase font-semibold">Data Confidence</span>
+<span class="font-label-md text-label-md text-primary font-bold">98% Verified</span>
+</div>
+<div class="w-full bg-surface-container-high h-1.5 rounded-full overflow-hidden">
+<div class="bg-primary h-full rounded-full" style="width: 98%;"></div>
+</div>
+<p class="font-label-md text-label-md text-on-surface-variant mt-1 text-right">
+              Via MC Road &amp; NH 66
+            </p>
+</div>
+</div>
+<!-- Middle Journey Schedule Diagram -->
+<div class="p-space-md flex-1 flex flex-col justify-between">
+<div class="grid grid-cols-1 md:grid-cols-3 gap-space-md items-center mb-space-md">
+<!-- Departure -->
+<div class="flex flex-col">
+<span class="font-headline-lg text-headline-lg font-extrabold text-primary leading-none">06:30 AM</span>
+<span class="font-title-md text-title-md font-bold text-on-surface mt-1">Trivandrum Central</span>
+<span class="font-label-md text-label-md text-on-surface-variant">Thampanoor Platform 4</span>
+</div>
+<!-- Route Duration Timeline -->
+<div class="flex flex-col items-center justify-center px-space-xs">
+<span class="font-label-md text-label-md text-secondary font-bold uppercase tracking-wider mb-1">
+                8h 45m Duration
+              </span>
+<div class="w-full flex items-center gap-1">
+<span class="w-2.5 h-2.5 rounded-full bg-primary"></span>
+<div class="h-0.5 flex-1 bg-gradient-to-r from-primary via-secondary to-primary"></div>
+<span class="material-symbols-outlined text-secondary text-base">directions_bus</span>
+<div class="h-0.5 flex-1 bg-gradient-to-r from-secondary via-primary to-primary"></div>
+<span class="w-2.5 h-2.5 rounded-full bg-primary"></span>
+</div>
+<span class="font-label-md text-label-md text-on-surface-variant mt-1">
+                12 Scheduled Halts
+              </span>
+</div>
+<!-- Arrival -->
+<div class="flex flex-col md:text-right">
+<span class="font-headline-lg text-headline-lg font-extrabold text-on-surface leading-none">03:15 PM</span>
+<span class="font-title-md text-title-md font-bold text-on-surface mt-1">Kannur Municipal</span>
+<span class="font-label-md text-label-md text-on-surface-variant">Old Bus Stand Terminal</span>
+</div>
+</div>
+<!-- Major Halts String -->
+<div class="flex flex-wrap items-center gap-1.5 text-on-surface-variant bg-surface-container-low px-space-sm py-1.5 rounded">
+<span class="font-label-md text-label-md uppercase font-bold text-primary">Stops:</span>
+<span class="font-label-md text-label-md">Kollam</span>
+<span class="text-outline">→</span>
+<span class="font-label-md text-label-md">Alappuzha</span>
+<span class="text-outline">→</span>
+<span class="font-label-md text-label-md">Ernakulam Vyttila</span>
+<span class="text-outline">→</span>
+<span class="font-label-md text-label-md">Thrissur</span>
+<span class="text-outline">→</span>
+<span class="font-label-md text-label-md">Kozhikode</span>
+<span class="text-outline">→</span>
+<span class="font-label-md text-label-md font-semibold text-on-surface">Kannur</span>
+</div>
+</div>
+<!-- Right Side Fare & Reservation Action -->
+<div class="p-space-md xl:w-64 bg-surface-container flex flex-col justify-between items-end border-t xl:border-t-0">
+<div class="text-right w-full">
+<span class="font-label-md text-label-md uppercase text-on-surface-variant font-bold">Standard Tariff</span>
+<div class="font-headline-lg text-headline-lg font-extrabold text-primary leading-tight">
+              ₹485<span class="font-body-md text-body-md text-on-surface-variant font-normal"> /seat</span>
+</div>
+<span class="px-space-xs py-0.5 rounded bg-secondary-container/40 text-on-secondary-container font-label-md text-label-md font-semibold inline-block mt-0.5">
+              Ordinary Luggage Free
+            </span>
+</div>
+<div class="w-full mt-space-md flex flex-col gap-space-xs">
+<button class="w-full py-2.5 rounded bg-primary hover:bg-primary-container text-on-primary font-title-md text-title-md font-bold shadow-md transition-colors flex items-center justify-center gap-1">
+<span>Book Ticket</span>
+<span class="material-symbols-outlined text-sm">arrow_forward</span>
+</button>
+<button class="w-full py-1 rounded text-on-surface-variant hover:text-primary font-label-md text-label-md uppercase font-bold tracking-wider text-center">
+              View Logway Schedule
+            </button>
+</div>
+</div>
+</article>
+<!-- CARD 2: MINNAL SUPER DELUXE (#MN-02 NIGHT RIDER) -->
+<article class="relative bg-surface-container-lowest rounded-xl shadow-md hover:shadow-lg transition-all overflow-hidden flex flex-col xl:flex-row">
+<!-- Left Yellow Heritage Accent Ribbon -->
+<div class="w-full xl:w-2 bg-primary h-2 xl:h-auto"></div>
+<!-- Left / Top Header Block -->
+<div class="p-space-md xl:w-80 bg-surface-container-low flex flex-col justify-between">
+<div>
+<div class="flex items-center justify-between gap-space-xs mb-2">
+<span class="px-space-xs py-0.5 rounded bg-primary-container text-on-primary font-label-md text-label-md font-extrabold tracking-wider uppercase flex items-center gap-1">
+<span class="material-symbols-outlined text-xs">bolt</span> Minnal Deluxe
+              </span>
+<span class="font-label-md text-label-md text-primary font-bold uppercase tracking-wider">
+                മിന്നൽ (Night Rider)
+              </span>
+</div>
+<div class="flex items-center gap-space-xs mb-1">
+<span class="font-headline-sm text-headline-sm font-extrabold text-on-surface">#MN-02</span>
+<span class="px-space-xs py-0.5 rounded bg-secondary-container text-on-secondary-container font-label-md text-label-md font-bold">
+                NON-STOP CORRIDOR
+              </span>
+</div>
+<p class="font-label-md text-label-md text-on-surface-variant font-medium">
+              Depot: Trivandrum Central Night Wing
+            </p>
+</div>
+<div class="mt-space-md pt-space-sm bg-surface-container/50 p-space-xs rounded">
+<div class="flex items-center justify-between mb-1">
+<span class="font-label-md text-label-md text-on-surface-variant uppercase font-semibold flex items-center gap-1">
+<span class="material-symbols-outlined text-primary text-xs">satellite_alt</span> Live GPS Tracked
+              </span>
+<span class="font-label-md text-label-md text-secondary font-bold">Active Radar</span>
+</div>
+<div class="w-full bg-surface-container-high h-1.5 rounded-full overflow-hidden">
+<div class="bg-secondary-container h-full rounded-full" style="width: 100%;"></div>
+</div>
+<p class="font-label-md text-label-md text-primary font-bold mt-1 text-right">
+              Fastest Highway Run
+            </p>
+</div>
+</div>
+<!-- Middle Journey Schedule Diagram -->
+<div class="p-space-md flex-1 flex flex-col justify-between">
+<div class="grid grid-cols-1 md:grid-cols-3 gap-space-md items-center mb-space-md">
+<!-- Departure -->
+<div class="flex flex-col">
+<span class="font-headline-lg text-headline-lg font-extrabold text-primary leading-none">09:00 PM</span>
+<span class="font-title-md text-title-md font-bold text-on-surface mt-1">Trivandrum Central</span>
+<span class="font-label-md text-label-md text-on-surface-variant">Thampanoor Express Bay</span>
+</div>
+<!-- Route Duration Timeline -->
+<div class="flex flex-col items-center justify-center px-space-xs">
+<span class="px-space-xs py-0.5 rounded bg-secondary-container text-on-secondary-container font-label-md text-label-md font-extrabold uppercase tracking-wider mb-1">
+                7h 15m (Fastest)
+              </span>
+<div class="w-full flex items-center gap-1">
+<span class="w-2.5 h-2.5 rounded-full bg-secondary"></span>
+<div class="h-0.5 flex-1 bg-gradient-to-r from-secondary via-primary to-secondary"></div>
+<span class="material-symbols-outlined text-primary text-base">flash_on</span>
+<div class="h-0.5 flex-1 bg-gradient-to-r from-primary via-secondary to-secondary"></div>
+<span class="w-2.5 h-2.5 rounded-full bg-secondary"></span>
+</div>
+<span class="font-label-md text-label-md text-on-surface-variant mt-1">
+                Only 4 Bypass Halts
+              </span>
+</div>
+<!-- Arrival -->
+<div class="flex flex-col md:text-right">
+<span class="font-headline-lg text-headline-lg font-extrabold text-on-surface leading-none">04:15 AM</span>
+<span class="font-title-md text-title-md font-bold text-on-surface mt-1">Kannur Municipal</span>
+<span class="font-label-md text-label-md text-on-surface-variant">HQ Main Stand</span>
+</div>
+</div>
+<!-- Major Halts String -->
+<div class="flex flex-wrap items-center gap-1.5 text-on-surface-variant bg-surface-container-low px-space-sm py-1.5 rounded">
+<span class="font-label-md text-label-md uppercase font-bold text-secondary">Express Corridor:</span>
+<span class="font-label-md text-label-md font-semibold">Kottayam Bypass</span>
+<span class="text-outline">→</span>
+<span class="font-label-md text-label-md font-semibold">Vyttila Hub</span>
+<span class="text-outline">→</span>
+<span class="font-label-md text-label-md font-semibold">Kozhikode Calicut</span>
+<span class="text-outline">→</span>
+<span class="font-label-md text-label-md font-bold text-primary">Kannur Central</span>
+</div>
+</div>
+<!-- Right Side Fare & Reservation Action -->
+<div class="p-space-md xl:w-64 bg-surface-container flex flex-col justify-between items-end border-t xl:border-t-0">
+<div class="text-right w-full">
+<span class="font-label-md text-label-md uppercase text-on-surface-variant font-bold">Minnal Express Tariff</span>
+<div class="font-headline-lg text-headline-lg font-extrabold text-primary leading-tight">
+              ₹540<span class="font-body-md text-body-md text-on-surface-variant font-normal"> /seat</span>
+</div>
+<span class="px-space-xs py-0.5 rounded bg-primary/10 text-primary font-label-md text-label-md font-semibold inline-block mt-0.5">
+              High Comfort Reclining
+            </span>
+</div>
+<div class="w-full mt-space-md flex flex-col gap-space-xs">
+<button class="w-full py-2.5 rounded bg-secondary-container hover:bg-secondary-fixed text-on-secondary-container font-title-md text-title-md font-bold shadow-md transition-colors flex items-center justify-center gap-1">
+<span>Quick Reserve</span>
+<span class="material-symbols-outlined text-sm">bolt</span>
+</button>
+<button class="w-full py-1 rounded text-on-surface-variant hover:text-primary font-label-md text-label-md uppercase font-bold tracking-wider text-center">
+              Radar Telemetry
+            </button>
+</div>
+</div>
+</article>
+<!-- CARD 3: FAST PASSENGER (#FP-218) -->
+<article class="relative bg-surface-container-lowest rounded-xl shadow-md hover:shadow-lg transition-all overflow-hidden flex flex-col xl:flex-row">
+<!-- Left Yellow Heritage Accent Ribbon -->
+<div class="w-full xl:w-2 bg-secondary h-2 xl:h-auto"></div>
+<!-- Left / Top Header Block -->
+<div class="p-space-md xl:w-80 bg-surface-container-low flex flex-col justify-between">
+<div>
+<div class="flex items-center justify-between gap-space-xs mb-2">
+<span class="px-space-xs py-0.5 rounded bg-surface-variant text-on-surface font-label-md text-label-md font-bold tracking-wider uppercase">
+                Fast Passenger
+              </span>
+<span class="font-label-md text-label-md text-on-surface-variant font-bold uppercase tracking-wider">
+                ഫാസ്റ്റ് പാസഞ്ചർ
+              </span>
+</div>
+<div class="flex items-center gap-space-xs mb-1">
+<span class="font-headline-sm text-headline-sm font-extrabold text-on-surface">#FP-218</span>
+<span class="px-space-xs py-0.5 rounded bg-surface-container-high text-on-surface font-label-md text-label-md font-semibold">
+                Kerala Heritage Grille
+              </span>
+</div>
+<p class="font-label-md text-label-md text-on-surface-variant font-medium">
+              Depot: Attingal / TVM Rural
+            </p>
+</div>
+<div class="mt-space-md pt-space-sm bg-surface-container/50 p-space-xs rounded">
+<div class="flex items-center justify-between mb-1">
+<span class="font-label-md text-label-md text-on-surface-variant uppercase font-semibold">Punctuality Score</span>
+<span class="font-label-md text-label-md text-secondary font-bold">94% Regular</span>
+</div>
+<div class="w-full bg-surface-container-high h-1.5 rounded-full overflow-hidden">
+<div class="bg-secondary h-full rounded-full" style="width: 94%;"></div>
+</div>
+<p class="font-label-md text-label-md text-on-surface-variant mt-1 text-right">
+              Ordinary Trunk Line
+            </p>
+</div>
+</div>
+<!-- Middle Journey Schedule Diagram -->
+<div class="p-space-md flex-1 flex flex-col justify-between">
+<div class="grid grid-cols-1 md:grid-cols-3 gap-space-md items-center mb-space-md">
+<!-- Departure -->
+<div class="flex flex-col">
+<span class="font-headline-lg text-headline-lg font-extrabold text-on-surface leading-none">07:15 AM</span>
+<span class="font-title-md text-title-md font-bold text-on-surface mt-1">Trivandrum Central</span>
+<span class="font-label-md text-label-md text-on-surface-variant">Rural Platform 9</span>
+</div>
+<!-- Route Duration Timeline -->
+<div class="flex flex-col items-center justify-center px-space-xs">
+<span class="font-label-md text-label-md text-on-surface-variant font-bold uppercase tracking-wider mb-1">
+                9h 30m Duration
+              </span>
+<div class="w-full flex items-center gap-1">
+<span class="w-2.5 h-2.5 rounded-full bg-outline"></span>
+<div class="h-0.5 flex-1 bg-surface-variant"></div>
+<span class="material-symbols-outlined text-outline text-base">directions_bus</span>
+<div class="h-0.5 flex-1 bg-surface-variant"></div>
+<span class="w-2.5 h-2.5 rounded-full bg-outline"></span>
+</div>
+<span class="font-label-md text-label-md text-on-surface-variant mt-1">
+                24 Town Stops
+              </span>
+</div>
+<!-- Arrival -->
+<div class="flex flex-col md:text-right">
+<span class="font-headline-lg text-headline-lg font-extrabold text-on-surface leading-none">04:45 PM</span>
+<span class="font-title-md text-title-md font-bold text-on-surface mt-1">Kannur Municipal</span>
+<span class="font-label-md text-label-md text-on-surface-variant">Depot North Wing</span>
+</div>
+</div>
+<!-- Major Halts String -->
+<div class="flex flex-wrap items-center gap-1.5 text-on-surface-variant bg-surface-container-low px-space-sm py-1.5 rounded">
+<span class="font-label-md text-label-md uppercase font-bold text-on-surface">Major Stoppages:</span>
+<span class="font-label-md text-label-md">Attingal</span>
+<span class="text-outline">→</span>
+<span class="font-label-md text-label-md">Kottarakkara</span>
+<span class="text-outline">→</span>
+<span class="font-label-md text-label-md">Adoor</span>
+<span class="text-outline">→</span>
+<span class="font-label-md text-label-md">Chengannur</span>
+<span class="text-outline">→</span>
+<span class="font-label-md text-label-md">Kottayam</span>
+<span class="text-outline">→</span>
+<span class="font-label-md text-label-md">Angamaly</span>
+<span class="text-outline">→</span>
+<span class="font-label-md text-label-md">Kozhikode</span>
+</div>
+</div>
+<!-- Right Side Fare & Reservation Action -->
+<div class="p-space-md xl:w-64 bg-surface-container flex flex-col justify-between items-end border-t xl:border-t-0">
+<div class="text-right w-full">
+<span class="font-label-md text-label-md uppercase text-on-surface-variant font-bold">Subsidized Tariff</span>
+<div class="font-headline-lg text-headline-lg font-extrabold text-primary leading-tight">
+              ₹420<span class="font-body-md text-body-md text-on-surface-variant font-normal"> /seat</span>
+</div>
+<span class="px-space-xs py-0.5 rounded bg-surface-container-highest text-on-surface font-label-md text-label-md font-semibold inline-block mt-0.5">
+              Concession Available
+            </span>
+</div>
+<div class="w-full mt-space-md flex flex-col gap-space-xs">
+<button class="w-full py-2.5 rounded bg-primary hover:bg-primary-container text-on-primary font-title-md text-title-md font-bold shadow-md transition-colors flex items-center justify-center gap-1">
+<span>Book Ticket</span>
+<span class="material-symbols-outlined text-sm">arrow_forward</span>
+</button>
+<button class="w-full py-1 rounded text-on-surface-variant hover:text-primary font-label-md text-label-md uppercase font-bold tracking-wider text-center">
+              Stoppage Directory
+            </button>
+</div>
+</div>
+</article>
+</div>
+<!-- Depot Dispatch Insights Bento Block -->
+<div class="grid grid-cols-1 md:grid-cols-3 gap-space-md mt-space-md">
+<!-- Feature Card 1 -->
+<div class="p-space-md bg-surface-container-low rounded-xl shadow-sm flex items-start gap-space-sm">
+<div class="w-10 h-10 rounded bg-secondary-container text-on-secondary-container flex items-center justify-center font-bold">
+<span class="material-symbols-outlined">confirmation_number</span>
+</div>
+<div>
+<h4 class="font-title-md text-title-md font-bold text-on-surface">Conductor ETM Sync</h4>
+<p class="font-body-md text-body-md text-on-surface-variant mt-0.5">
+            Electronic Ticketing Machines punch data automatically to state servers every 3 stages.
+          </p>
+</div>
+</div>
+<!-- Feature Card 2 -->
+<div class="p-space-md bg-surface-container-low rounded-xl shadow-sm flex items-start gap-space-sm">
+<div class="w-10 h-10 rounded bg-primary text-on-primary flex items-center justify-center font-bold">
+<span class="material-symbols-outlined">shield_moon</span>
+</div>
+<div>
+<h4 class="font-title-md text-title-md font-bold text-on-surface">Night Ghat Clearance</h4>
+<p class="font-body-md text-body-md text-on-surface-variant mt-0.5">
+            Mountain trunk roads via Wayanad &amp; Idukki receive special double-driver crew allocations.
+          </p>
+</div>
+</div>
+<!-- Feature Card 3 -->
+<div class="p-space-md bg-surface-container-low rounded-xl shadow-sm flex items-start gap-space-sm">
+<div class="w-10 h-10 rounded bg-surface-container-highest text-primary flex items-center justify-center font-bold">
+<span class="material-symbols-outlined">contact_phone</span>
+</div>
+<div>
+<h4 class="font-title-md text-title-md font-bold text-on-surface">Depot Control Room</h4>
+<p class="font-body-md text-body-md text-on-surface-variant mt-0.5">
+            Thampanoor Enquiry: 0471-2323886 | Kannur Stand Control: 0497-2707777 (24/7 Service).
+          </p>
+</div>
+</div>
+</div>
+</section>
+</div></main></div></body></html>
