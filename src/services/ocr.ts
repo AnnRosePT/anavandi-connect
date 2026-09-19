@@ -33,13 +33,23 @@ export interface OcrOptions {
 
 // ── Gemini Vision API call ────────────────────────────────────────────────────
 
+export class InvalidTimetableImageError extends Error {
+  constructor(message: string) {
+    super(message);
+    this.name = "InvalidTimetableImageError";
+  }
+}
+
 // ── Gemini Vision Candidate Models ───────────────────────────────────────────
 
 const GEMINI_CANDIDATE_MODELS = [
+  "gemini-2.5-flash",
+  "gemini-2.0-flash",
+  "gemini-2.5-flash-lite",
+  "gemini-3.5-flash",
   "gemini-3.6-flash",
   "gemini-3.8-flash",
-  "gemini-3.5-flash",
-  "gemini-2.5-flash-lite",
+  "gemini-1.5-flash",
 ];
 
 // Fallback sample image (high-res Kerala bus timetable register)
@@ -118,11 +128,22 @@ async function callGeminiVision(
   mimeType: string,
   apiKey: string
 ): Promise<string> {
-  const prompt = `You are an expert OCR engine for KSRTC (Kerala State Road Transport Corporation) bus timetables.
+  const prompt = `You are an expert OCR engine and document validator for KSRTC (Kerala State Road Transport Corporation) bus timetables and transit rosters.
 
-Analyze this timetable image carefully and extract ALL data. Return a JSON object with EXACTLY this structure:
+STEP 1 — STRICT IMAGE VALIDATION:
+Check whether the uploaded image is an authentic bus timetable, transit schedule, conductor waybill, depot trip sheet, or roster.
+- If the image is NOT a bus timetable or transit document (for example: photo of an animal/dog/cat, fruit/apple/food, person/selfie, nature/scenery, car/vehicle exterior, furniture, meme, or any random non-schedule object):
+  Return ONLY this JSON object:
+  {
+    "isValidTimetable": false,
+    "rejectionReason": "Invalid Image: The uploaded image appears to be a photo of a [specify what is seen, e.g. dog / apple / animal / person / random object] and does not contain any bus timetable, route, or schedule data.",
+    "stops": []
+  }
 
+STEP 2 — TIMETABLE EXTRACTION (only if the image IS a valid timetable or schedule):
+Return a JSON object with EXACTLY this structure:
 {
+  "isValidTimetable": true,
   "title": "route title in English (e.g. Thrissur to Ernakulam)",
   "titleMl": "route title in Malayalam if visible",
   "origin": "first stop name",
@@ -153,12 +174,10 @@ Analyze this timetable image carefully and extract ALL data. Return a JSON objec
   "notes": "any notes written on the timetable"
 }
 
-IMPORTANT RULES:
-- Extract EVERY stop row visible in the table
-- If a time has a strikethrough or correction, record BOTH the original (printedArrival/printedDeparture) and corrected value (arrival/departure)
-- Set hasCorrectionInk=true for any stop with handwritten corrections or strikethroughs
-- Bilingual timetables often show Malayalam script AND English - extract both
-- Return ONLY the JSON object, no explanation text`;
+CRITICAL RULES:
+- If this image is not a bus schedule (e.g. apple, dog, cat, person, random photo), ALWAYS return "isValidTimetable": false and "stops": []. NEVER hallucinate bus stops for non-timetable photos.
+- If it IS a timetable, extract EVERY stop row visible in the table.
+- Return ONLY the JSON object, no explanation or conversational text.`;
 
   const body = JSON.stringify({
     contents: [
@@ -250,160 +269,182 @@ IMPORTANT RULES:
 function parseGeminiResponse(
   raw: string,
   fileName: string
-): TimetableRecord | null {
-  try {
-    // Strip markdown code fences or extract JSON block
-    let cleaned = raw.trim();
-    const jsonBlockMatch = cleaned.match(/```(?:json)?\s*([\s\S]*?)\s*```/i);
-    if (jsonBlockMatch && jsonBlockMatch[1]) {
-      cleaned = jsonBlockMatch[1].trim();
-    } else {
-      const objectMatch = cleaned.match(/\{[\s\S]*\}/);
-      if (objectMatch) {
-        cleaned = objectMatch[0].trim();
-      }
+): TimetableRecord {
+  // Strip markdown code fences or extract JSON block
+  let cleaned = raw.trim();
+  const jsonBlockMatch = cleaned.match(/```(?:json)?\s*([\s\S]*?)\s*```/i);
+  if (jsonBlockMatch && jsonBlockMatch[1]) {
+    cleaned = jsonBlockMatch[1].trim();
+  } else {
+    const objectMatch = cleaned.match(/\{[\s\S]*\}/);
+    if (objectMatch) {
+      cleaned = objectMatch[0].trim();
     }
-
-    const parsed = JSON.parse(cleaned);
-    const id = `KL-${Date.now().toString().slice(-6)}`;
-    const tripId = `KL-RTC-${Math.floor(1000 + Math.random() * 9000)}`;
-
-    const stops: StopItem[] = (parsed.stops ?? []).map(
-      (s: {
-        seq: number;
-        name: string;
-        nameMl?: string;
-        arrival?: string;
-        departure?: string;
-        confidence?: number;
-        hasCorrectionInk?: boolean;
-        printedArrival?: string;
-        printedDeparture?: string;
-      }, idx: number) => {
-        const coordKey = Object.keys(KERALA_COORDINATES).find((k) =>
-          s.name?.toLowerCase().includes(k.toLowerCase()) ||
-          k.toLowerCase().includes(s.name?.toLowerCase())
-        );
-        return {
-          id: `stop-${Date.now()}-${idx + 1}`,
-          seq: s.seq ?? idx + 1,
-          name: s.name ?? `Stop ${idx + 1}`,
-          nameMl: s.nameMl ?? "",
-          code: `KSRTC-${(s.name ?? "STP")
-            .slice(0, 3)
-            .toUpperCase()
-            .replace(/\s/g, "")}-${String(idx + 1).padStart(3, "0")}`,
-          arrival: s.arrival ?? "—",
-          departure: s.departure ?? "—",
-          confidence: s.confidence ?? 90,
-          status:
-            s.hasCorrectionInk ||
-            (s.confidence != null && s.confidence < 75)
-              ? "needs_review"
-              : "verified",
-          isAnomaly: s.hasCorrectionInk ?? false,
-          coordinates: coordKey
-            ? KERALA_COORDINATES[coordKey]
-            : undefined,
-          note: s.hasCorrectionInk
-            ? `Correction detected: printed ${s.printedArrival ?? s.printedDeparture} → corrected`
-            : undefined,
-        } as StopItem;
-      }
-    );
-
-    const discrepancies: DiscrepancyDetail[] = (parsed.stops ?? [])
-      .filter((s: { hasCorrectionInk?: boolean }) => s.hasCorrectionInk)
-      .map((s: {
-        name?: string;
-        printedArrival?: string;
-        arrival?: string;
-        printedDeparture?: string;
-        departure?: string;
-      }, idx: number) => ({
-        stopIndex: idx,
-        stopName: s.name ?? `Stop ${idx + 1}`,
-        field:
-          s.printedArrival && s.printedArrival !== s.arrival
-            ? "arrival"
-            : "departure",
-        printedValue:
-          s.printedArrival !== s.arrival
-            ? (s.printedArrival ?? "")
-            : (s.printedDeparture ?? ""),
-        printedConfidence: 65,
-        handwrittenValue:
-          s.printedArrival !== s.arrival
-            ? (s.arrival ?? "")
-            : (s.departure ?? ""),
-        handwrittenConfidence: 90,
-        handwrittenNote: "Ink correction detected by vision model",
-        selectedResolution: "none",
-        diffScoreMins: 5,
-      } as DiscrepancyDetail));
-
-    // If Gemini didn't find stops (e.g. non-tabular section), merge with demo seeds
-    if (!stops || stops.length === 0) {
-      console.warn("No stops detected in Gemini response, enhancing demo dataset with detected route metadata");
-      const demo = buildDemoTimetable(fileName);
-      return {
-        ...demo,
-        title: parsed.title || demo.title,
-        titleMl: parsed.titleMl || demo.titleMl,
-        origin: parsed.origin || demo.origin,
-        destination: parsed.destination || demo.destination,
-        routeCode: parsed.routeCode || demo.routeCode,
-        serviceType: parsed.serviceType || demo.serviceType,
-        serviceName: parsed.serviceType || demo.serviceName,
-      };
-    }
-
-    const record: TimetableRecord = {
-      id,
-      tripId,
-      routeCode:
-        parsed.routeCode ??
-        `${(parsed.origin ?? "ORI").slice(0, 3).toUpperCase()}-${(
-          parsed.destination ?? "DST"
-        )
-          .slice(0, 3)
-          .toUpperCase()}-01`,
-      title: parsed.title ?? "KSRTC Route",
-      titleMl: parsed.titleMl ?? "",
-      origin: parsed.origin ?? stops[0]?.name ?? "Origin",
-      originMl: "",
-      destination:
-        parsed.destination ?? stops[stops.length - 1]?.name ?? "Destination",
-      destinationMl: "",
-      serviceType: parsed.serviceType ?? "ORDINARY",
-      serviceName: parsed.serviceType ?? "Ordinary",
-      serviceNameMl: "",
-      vehicleNo: parsed.vehicleNo ?? "",
-      chassisType: parsed.chassisType ?? "",
-      depotOrigin: parsed.origin ?? "",
-      depotDestination: parsed.destination ?? "",
-      overallConfidence: parsed.overallConfidence ?? 85,
-      status: "PENDING_VERIFICATION",
-      totalDistanceKm: parsed.totalDistanceKm ?? 0,
-      estimatedDuration: parsed.estimatedDuration ?? "",
-      fareInr: parsed.fareInr ?? 0,
-      sourceFile: fileName,
-      sourceType: parsed.hasHandwrittenAnnotations
-        ? "handwritten_log"
-        : "printed_press",
-      language: "Bilingual",
-      viaSummary: parsed.viaSummary ?? "",
-      viaSummaryMl: "",
-      createdAt: new Date().toISOString(),
-      stops,
-      discrepancies,
-    };
-
-    return record;
-  } catch (err) {
-    console.error("Failed to parse Gemini response:", err, "\nRaw:", raw);
-    return null;
   }
+
+  let parsed: any;
+  try {
+    parsed = JSON.parse(cleaned);
+  } catch (parseErr) {
+    console.error("Failed to parse Gemini response as JSON:", parseErr, "\nRaw:", raw);
+    const rawLower = (raw || "").toLowerCase();
+    if (
+      rawLower.includes("dog") ||
+      rawLower.includes("cat") ||
+      rawLower.includes("apple") ||
+      rawLower.includes("fruit") ||
+      rawLower.includes("animal") ||
+      rawLower.includes("person") ||
+      rawLower.includes("not a timetable") ||
+      rawLower.includes("invalid image") ||
+      rawLower.includes("no timetable") ||
+      rawLower.includes("no bus stop")
+    ) {
+      throw new InvalidTimetableImageError(
+        "Invalid Image: The uploaded photo is not recognized as a bus timetable or transit schedule."
+      );
+    }
+    throw new InvalidTimetableImageError(
+      "Invalid Image: Failed to parse schedule data from image. Please ensure the timetable image is clear and legible."
+    );
+  }
+
+  // Check 1: Explicit AI rejection (e.g. dog, apple, random photo)
+  if (parsed.isValidTimetable === false) {
+    const reason =
+      parsed.rejectionReason ||
+      "Invalid Image: The uploaded image is not a recognized bus timetable or transit document.";
+    throw new InvalidTimetableImageError(reason);
+  }
+
+  // Check 2: Missing or empty stops array
+  const rawStops = parsed.stops ?? [];
+  if (!Array.isArray(rawStops) || rawStops.length === 0) {
+    const reason =
+      parsed.rejectionReason ||
+      "Invalid Image: No bus stops or timetable schedule data detected in this image. Please upload a clear photo of a bus timetable or roster.";
+    throw new InvalidTimetableImageError(reason);
+  }
+
+  const id = `KL-${Date.now().toString().slice(-6)}`;
+  const tripId = `KL-RTC-${Math.floor(1000 + Math.random() * 9000)}`;
+
+  const stops: StopItem[] = rawStops.map(
+    (s: {
+      seq: number;
+      name: string;
+      nameMl?: string;
+      arrival?: string;
+      departure?: string;
+      confidence?: number;
+      hasCorrectionInk?: boolean;
+      printedArrival?: string;
+      printedDeparture?: string;
+    }, idx: number) => {
+      const coordKey = Object.keys(KERALA_COORDINATES).find((k) =>
+        s.name?.toLowerCase().includes(k.toLowerCase()) ||
+        k.toLowerCase().includes(s.name?.toLowerCase())
+      );
+      return {
+        id: `stop-${Date.now()}-${idx + 1}`,
+        seq: s.seq ?? idx + 1,
+        name: s.name ?? `Stop ${idx + 1}`,
+        nameMl: s.nameMl ?? "",
+        code: `KSRTC-${(s.name ?? "STP")
+          .slice(0, 3)
+          .toUpperCase()
+          .replace(/\s/g, "")}-${String(idx + 1).padStart(3, "0")}`,
+        arrival: s.arrival ?? "—",
+        departure: s.departure ?? "—",
+        confidence: s.confidence ?? 90,
+        status:
+          s.hasCorrectionInk ||
+          (s.confidence != null && s.confidence < 75)
+            ? "needs_review"
+            : "verified",
+        isAnomaly: s.hasCorrectionInk ?? false,
+        coordinates: coordKey
+          ? KERALA_COORDINATES[coordKey]
+          : undefined,
+        note: s.hasCorrectionInk
+          ? `Correction detected: printed ${s.printedArrival ?? s.printedDeparture} → corrected`
+          : undefined,
+      } as StopItem;
+    }
+  );
+
+  const discrepancies: DiscrepancyDetail[] = rawStops
+    .filter((s: { hasCorrectionInk?: boolean }) => s.hasCorrectionInk)
+    .map((s: {
+      name?: string;
+      printedArrival?: string;
+      arrival?: string;
+      printedDeparture?: string;
+      departure?: string;
+    }, idx: number) => ({
+      stopIndex: idx,
+      stopName: s.name ?? `Stop ${idx + 1}`,
+      field:
+        s.printedArrival && s.printedArrival !== s.arrival
+          ? "arrival"
+          : "departure",
+      printedValue:
+        s.printedArrival !== s.arrival
+          ? (s.printedArrival ?? "")
+          : (s.printedDeparture ?? ""),
+      printedConfidence: 65,
+      handwrittenValue:
+        s.printedArrival !== s.arrival
+          ? (s.arrival ?? "")
+          : (s.departure ?? ""),
+      handwrittenConfidence: 90,
+      handwrittenNote: "Ink correction detected by vision model",
+      selectedResolution: "none",
+      diffScoreMins: 5,
+    } as DiscrepancyDetail));
+
+  const record: TimetableRecord = {
+    id,
+    tripId,
+    routeCode:
+      parsed.routeCode ??
+      `${(parsed.origin ?? "ORI").slice(0, 3).toUpperCase()}-${(
+        parsed.destination ?? "DST"
+      )
+        .slice(0, 3)
+        .toUpperCase()}-01`,
+    title: parsed.title ?? "KSRTC Route",
+    titleMl: parsed.titleMl ?? "",
+    origin: parsed.origin ?? stops[0]?.name ?? "Origin",
+    originMl: "",
+    destination:
+      parsed.destination ?? stops[stops.length - 1]?.name ?? "Destination",
+    destinationMl: "",
+    serviceType: parsed.serviceType ?? "ORDINARY",
+    serviceName: parsed.serviceType ?? "Ordinary",
+    serviceNameMl: "",
+    vehicleNo: parsed.vehicleNo ?? "",
+    chassisType: parsed.chassisType ?? "",
+    depotOrigin: parsed.origin ?? "",
+    depotDestination: parsed.destination ?? "",
+    overallConfidence: parsed.overallConfidence ?? 85,
+    status: "PENDING_VERIFICATION",
+    totalDistanceKm: parsed.totalDistanceKm ?? 0,
+    estimatedDuration: parsed.estimatedDuration ?? "",
+    fareInr: parsed.fareInr ?? 0,
+    sourceFile: fileName,
+    sourceType: parsed.hasHandwrittenAnnotations
+      ? "handwritten_log"
+      : "printed_press",
+    language: "Bilingual",
+    viaSummary: parsed.viaSummary ?? "",
+    viaSummaryMl: "",
+    createdAt: new Date().toISOString(),
+    stops,
+    discrepancies,
+  };
+
+  return record;
 }
 
 // ── Demo fallback (used when no API key is set) ───────────────────────────────
@@ -524,9 +565,33 @@ export async function processTimetableImage(
       providerUsed = "gemini_vision";
 
       steps[3].status = "completed";
-      steps[3].details = `Gemini Vision extracted ${timetable?.stops.length ?? 0} stops (${timetable?.origin || "Origin"} → ${timetable?.destination || "Terminus"})`;
+      steps[3].details = `Gemini Vision extracted ${timetable.stops.length} stops (${timetable.origin || "Origin"} → ${timetable.destination || "Terminus"})`;
       if (onStepProgress) onStepProgress(3, steps[3]);
     } catch (err: any) {
+      const isInvalidImage =
+        err instanceof InvalidTimetableImageError ||
+        (err?.message && err.message.toLowerCase().includes("invalid image")) ||
+        (err?.message && err.message.toLowerCase().includes("no bus stop"));
+
+      if (isInvalidImage) {
+        steps[3].status = "warning";
+        steps[3].details = err.message || "Invalid image rejected";
+        if (onStepProgress) onStepProgress(3, steps[3]);
+        // Fail completely as requested - DO NOT fall back to demo timetable
+        throw err;
+      }
+
+      // If user uploaded a custom image (e.g. data URL) and the API call failed:
+      const isCustomUserUpload = fileDataUrl && fileDataUrl.startsWith("data:");
+      if (isCustomUserUpload) {
+        steps[3].status = "warning";
+        steps[3].details = `OCR Error: ${err?.message || "Failed to process image"}`;
+        if (onStepProgress) onStepProgress(3, steps[3]);
+        throw new InvalidTimetableImageError(
+          `Processing Error: ${err?.message || "Could not extract bus timetable from image."}`
+        );
+      }
+
       console.warn("Gemini API failed, falling back to demo:", err);
       steps[3].status = "warning";
       steps[3].details = `Gemini API Notice: ${err?.message || "Check API key"} — fallback demo data applied`;
@@ -534,6 +599,16 @@ export async function processTimetableImage(
       timetable = null;
     }
   } else {
+    // If user uploaded a custom file without an API key
+    const isCustomUserUpload = fileDataUrl && fileDataUrl.startsWith("data:");
+    if (isCustomUserUpload) {
+      steps[3].status = "warning";
+      steps[3].details = "API key required for custom images";
+      if (onStepProgress) onStepProgress(3, steps[3]);
+      throw new InvalidTimetableImageError(
+        "AI Vision API key required: Please configure NEXT_PUBLIC_AI_API_KEY in .env.local to digitize custom uploaded images."
+      );
+    }
     steps[3].status = "warning";
     steps[3].details = "No API key set — running demo engine. Add NEXT_PUBLIC_AI_API_KEY to .env.local";
     if (onStepProgress) onStepProgress(3, steps[3]);
