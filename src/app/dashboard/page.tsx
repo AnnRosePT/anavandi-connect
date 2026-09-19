@@ -36,12 +36,13 @@ export default function DashboardPage() {
     >
       <div className="w-full px-space-md sm:px-space-lg flex flex-col gap-space-lg pb-space-xl">
       {/* Top Banner */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-space-sm bg-surface-container-low p-space-md rounded-xl border border-surface-container shadow-sm">
+      <div className="telemetry-scan-bar flex flex-col sm:flex-row sm:items-center justify-between gap-space-sm bg-surface-container-low p-space-md rounded-xl border border-surface-container shadow-sm animate-fade-in-down">
         <div>
           <div className="flex items-center gap-2">
-            <span className="w-2.5 h-2.5 rounded-full bg-secondary-container"></span>
-            <span className="font-label-md text-label-md uppercase tracking-wider text-secondary font-bold">
-              Depot Operations Command Center
+            <span className="w-2.5 h-2.5 rounded-full bg-[#b71c1c] animate-radar-red"></span>
+            <span className="font-label-md text-label-md uppercase tracking-wider text-secondary font-bold flex items-center gap-1.5">
+              <span>Depot Operations Command Center</span>
+              <span className="text-[10px] bg-secondary-container/40 px-1.5 py-0.2 rounded font-mono text-on-secondary-container">LIVE TELEMETRY</span>
             </span>
           </div>
           <h1 className="font-headline-lg text-headline-lg text-on-surface font-extrabold mt-1">
@@ -55,14 +56,14 @@ export default function DashboardPage() {
         <div className="flex flex-wrap items-center gap-space-sm">
           <Link
             href="/upload"
-            className="px-space-md py-2 bg-primary text-on-primary rounded font-label-md text-label-md uppercase tracking-wider font-bold shadow-sm hover:brightness-110 flex items-center gap-1.5"
+            className="btn-tactile px-space-md py-2 bg-primary text-on-primary rounded font-label-md text-label-md uppercase tracking-wider font-bold shadow-md hover:shadow-lg hover:bg-primary-container flex items-center gap-1.5 transition-all"
           >
-            <span className="material-symbols-outlined text-base">upload_file</span>
+            <span className="material-symbols-outlined text-base animate-bus-cruise">upload_file</span>
             <span>Digitize Roster</span>
           </Link>
           <Link
             href="/verification"
-            className="px-space-md py-2 bg-secondary text-on-secondary rounded font-label-md text-label-md uppercase tracking-wider font-bold shadow-sm hover:bg-secondary-container hover:text-on-secondary-container flex items-center gap-1.5"
+            className="btn-tactile px-space-md py-2 bg-secondary text-on-secondary rounded font-label-md text-label-md uppercase tracking-wider font-bold shadow-md hover:shadow-lg hover:bg-secondary-container hover:text-on-secondary-container flex items-center gap-1.5 transition-all"
           >
             <span className="material-symbols-outlined text-base">fact_check</span>
             <span>Review Queue ({stats.pendingVerification})</span>
@@ -72,7 +73,7 @@ export default function DashboardPage() {
 
       {/* 4 Stat Cards */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-space-md">
-        <div className="bg-surface-container p-space-md rounded-xl shadow-sm border border-surface-container-high flex flex-col justify-between">
+        <div className="card-interactive bg-surface-container p-space-md rounded-xl shadow-sm border border-surface-container-high flex flex-col justify-between animate-fade-in-up stagger-1 cursor-default">
           <div className="flex items-center justify-between">
             <span className="font-label-md text-label-md uppercase text-on-surface-variant font-bold">
               Timetables Digitized
@@ -83,14 +84,14 @@ export default function DashboardPage() {
             <span className="font-display-lg text-display-lg text-primary font-extrabold">
               {stats.totalDigitized.toLocaleString()}
             </span>
-            <span className="font-label-md text-label-md text-secondary font-bold">+12 today</span>
+            <span className="shimmer-badge font-label-md text-label-md text-secondary font-bold px-1.5 py-0.5 rounded bg-secondary-container/30 border border-secondary-container">+12 today</span>
           </div>
           <span className="font-body-md text-xs text-on-surface-variant">
             State-wide depot registers ingested
           </span>
         </div>
 
-        <div className="bg-surface-container p-space-md rounded-xl shadow-sm border border-secondary/30 flex flex-col justify-between relative overflow-hidden">
+        <div className="card-interactive bg-surface-container p-space-md rounded-xl shadow-sm border border-secondary/30 flex flex-col justify-between relative overflow-hidden animate-fade-in-up stagger-2 cursor-default">
           <div className="absolute top-0 right-0 w-16 h-16 bg-secondary-container/20 rounded-bl-full pointer-events-none"></div>
           <div className="flex items-center justify-between">
             <span className="font-label-md text-label-md uppercase text-on-surface-variant font-bold">
@@ -102,7 +103,7 @@ export default function DashboardPage() {
             <span className="font-display-lg text-display-lg text-secondary font-extrabold">
               {stats.pendingVerification}
             </span>
-            <span className="font-label-md text-label-md bg-secondary-container px-1.5 py-0.5 rounded font-bold text-on-secondary-container">
+            <span className="shimmer-badge font-label-md text-label-md bg-secondary-container px-2 py-0.5 rounded font-bold text-on-secondary-container border border-secondary/20 animate-pulse">
               Requires Sign-off
             </span>
           </div>
@@ -111,7 +112,7 @@ export default function DashboardPage() {
           </span>
         </div>
 
-        <div className="bg-surface-container p-space-md rounded-xl shadow-sm border border-surface-container-high flex flex-col justify-between">
+        <div className="card-interactive bg-surface-container p-space-md rounded-xl shadow-sm border border-surface-container-high flex flex-col justify-between animate-fade-in-up stagger-3 cursor-default">
           <div className="flex items-center justify-between">
             <span className="font-label-md text-label-md uppercase text-on-surface-variant font-bold">
               Routes Processed
@@ -129,7 +130,7 @@ export default function DashboardPage() {
           </span>
         </div>
 
-        <div className="bg-surface-container p-space-md rounded-xl shadow-sm border border-surface-container-high flex flex-col justify-between">
+        <div className="card-interactive bg-surface-container p-space-md rounded-xl shadow-sm border border-surface-container-high flex flex-col justify-between animate-fade-in-up stagger-4 cursor-default">
           <div className="flex items-center justify-between">
             <span className="font-label-md text-label-md uppercase text-on-surface-variant font-bold">
               Average AI Confidence
@@ -149,24 +150,24 @@ export default function DashboardPage() {
       </div>
 
       {/* Recent Timetables Ingestion Table */}
-      <div className="bg-surface-container-low rounded-xl p-space-md shadow-md border border-surface-container flex flex-col gap-space-sm">
+      <div className="bg-surface-container-low rounded-xl p-space-md shadow-md border border-surface-container flex flex-col gap-space-sm animate-fade-in-up stagger-5">
         <div className="flex items-center justify-between pb-space-xs border-b border-surface-container">
           <div className="flex items-center gap-2">
-            <span className="material-symbols-outlined text-primary">schedule</span>
+            <span className="material-symbols-outlined text-primary animate-pulse">schedule</span>
             <h2 className="font-headline-sm text-headline-sm font-bold text-on-surface">
               Recent Timetables &amp; Ingestion Stream
             </h2>
           </div>
           <Link
             href="/timetables"
-            className="font-label-md text-label-md uppercase text-secondary hover:text-primary font-bold transition-colors flex items-center gap-1"
+            className="btn-tactile font-label-md text-label-md uppercase text-secondary hover:text-primary font-bold transition-colors flex items-center gap-1"
           >
             <span>View All ({timetables.length})</span>
             <span className="material-symbols-outlined text-sm">arrow_forward</span>
           </Link>
         </div>
 
-        <div className="overflow-x-auto rounded-lg bg-surface-container-lowest border border-surface-container">
+        <div className="overflow-x-auto rounded-lg bg-surface-container-lowest border border-surface-container shadow-inner">
           <table className="w-full text-left font-body-md text-body-md border-collapse">
             <thead>
               <tr className="bg-surface-container text-on-surface font-label-md text-label-md uppercase tracking-wider">
@@ -183,7 +184,7 @@ export default function DashboardPage() {
               {timetables.map((t) => {
                 const isPending = t.status === "PENDING_VERIFICATION" || t.status === "DRAFT";
                 return (
-                  <tr key={t.id} className="hover:bg-surface-container-low/60 transition-colors">
+                  <tr key={t.id} className="hover:bg-surface-container-low transition-all hover:scale-[1.002]">
                     <td className="py-3 px-space-md">
                       <div className="font-bold text-on-surface font-title-md">{t.title}</div>
                       <div className="font-label-md text-xs text-on-surface-variant font-mono">
@@ -219,7 +220,7 @@ export default function DashboardPage() {
                     </td>
                     <td className="py-3 px-space-md text-center">
                       {isPending ? (
-                        <span className="px-2 py-0.5 rounded bg-secondary text-on-secondary font-label-md text-xs font-bold inline-flex items-center gap-1">
+                        <span className="px-2 py-0.5 rounded bg-secondary text-on-secondary font-label-md text-xs font-bold inline-flex items-center gap-1.5 shadow-sm">
                           <span className="w-1.5 h-1.5 rounded-full bg-surface animate-ping"></span>
                           Pending Sign-off
                         </span>
@@ -233,19 +234,19 @@ export default function DashboardPage() {
                     <td className="py-3 px-space-md text-right space-x-1">
                       <Link
                         href={`/verification?id=${t.id}`}
-                        className="px-2 py-1 bg-surface-container hover:bg-primary hover:text-on-primary rounded font-label-md text-xs font-bold uppercase transition-colors inline-block"
+                        className="btn-tactile px-2.5 py-1 bg-surface-container hover:bg-primary hover:text-on-primary rounded font-label-md text-xs font-bold uppercase transition-all inline-block shadow-sm"
                       >
                         Verify
                       </Link>
                       <Link
                         href={`/map?id=${t.id}`}
-                        className="px-2 py-1 bg-surface-container hover:bg-secondary hover:text-on-secondary rounded font-label-md text-xs font-bold uppercase transition-colors inline-block"
+                        className="btn-tactile px-2.5 py-1 bg-surface-container hover:bg-secondary hover:text-on-secondary rounded font-label-md text-xs font-bold uppercase transition-all inline-block shadow-sm"
                       >
                         Map
                       </Link>
                       <button
                         onClick={() => exportTimetableCsv(t)}
-                        className="p-1 hover:text-primary transition-colors text-on-surface-variant align-middle"
+                        className="btn-tactile p-1 hover:text-primary transition-all text-on-surface-variant align-middle hover:scale-110 active:scale-95"
                         title="Export CSV"
                       >
                         <span className="material-symbols-outlined text-sm">download</span>

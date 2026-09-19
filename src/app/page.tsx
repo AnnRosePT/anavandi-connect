@@ -49,7 +49,7 @@ export default function LandingPage() {
             <div className="pt-space-sm flex flex-wrap items-center gap-space-md">
               <Link
                 href="/login"
-                className="flex items-center gap-space-xs px-space-lg py-space-sm bg-[#ffb300] text-[#7f0000] font-headline-sm text-headline-sm rounded-lg hover:brightness-110 active:translate-y-0.5 transition shadow-lg font-bold"
+                className="btn-tactile flex items-center gap-space-xs px-space-lg py-space-sm bg-[#ffb300] text-[#7f0000] font-headline-sm text-headline-sm rounded-lg hover:brightness-110 shadow-lg font-bold transition-all"
               >
                 <span className="material-symbols-outlined">person</span>
                 <span>Login / Signup</span>
@@ -57,7 +57,7 @@ export default function LandingPage() {
 
               <Link
                 href="/search"
-                className="flex items-center gap-space-xs px-space-lg py-space-sm bg-white/10 hover:bg-white/20 text-white font-title-md text-title-md rounded-lg transition border border-white/30"
+                className="btn-tactile flex items-center gap-space-xs px-space-lg py-space-sm bg-white/10 hover:bg-white/20 text-white font-title-md text-title-md rounded-lg transition-all border border-white/30 backdrop-blur-sm"
               >
                 <span className="material-symbols-outlined">search</span>
                 <span>{t("searchBuses")}</span>
@@ -82,11 +82,11 @@ export default function LandingPage() {
 
           {/* Right Column — AnaVandi Logo + Live KSRTC Card */}
           <div className="lg:col-span-5 relative flex flex-col items-center">
-            <div className="w-full relative rounded-xl overflow-hidden shadow-2xl bg-black/20 p-space-sm border border-white/15">
+            <div className="w-full relative rounded-xl overflow-hidden shadow-2xl bg-black/20 p-space-sm border border-white/15 card-interactive">
               {/* Logo Hero */}
               <div className="w-full h-64 sm:h-72 rounded-lg overflow-hidden relative shadow-md bg-[#b71c1c] flex items-center justify-center">
                 <img
-                  className="w-56 h-56 object-contain drop-shadow-2xl"
+                  className="w-56 h-56 object-contain drop-shadow-2xl animate-float"
                   alt="AnaVandi KSRTC Swift Logo"
                   src="/assets/new-logo.png"
                 />
@@ -133,7 +133,7 @@ export default function LandingPage() {
 
       {/* 4 Statistics Cards */}
       <section className="w-full grid grid-cols-2 md:grid-cols-4 gap-space-md mb-space-xl">
-        <div className="bg-surface-container p-space-md rounded-xl shadow-sm flex flex-col justify-between border border-surface-container-high">
+        <div className="card-interactive bg-surface-container p-space-md rounded-xl shadow-sm flex flex-col justify-between border border-surface-container-high cursor-default">
           <span className="font-label-md text-label-md uppercase text-on-surface-variant font-bold">
             Active Depots
           </span>
@@ -146,7 +146,7 @@ export default function LandingPage() {
           </span>
         </div>
 
-        <div className="bg-surface-container p-space-md rounded-xl shadow-sm flex flex-col justify-between border border-surface-container-high">
+        <div className="card-interactive bg-surface-container p-space-md rounded-xl shadow-sm flex flex-col justify-between border border-surface-container-high cursor-default">
           <span className="font-label-md text-label-md uppercase text-on-surface-variant font-bold">
             Archived Sheets
           </span>
@@ -158,7 +158,7 @@ export default function LandingPage() {
           </span>
         </div>
 
-        <div className="bg-surface-container p-space-md rounded-xl shadow-sm flex flex-col justify-between border border-surface-container-high">
+        <div className="card-interactive bg-surface-container p-space-md rounded-xl shadow-sm flex flex-col justify-between border border-surface-container-high cursor-default">
           <span className="font-label-md text-label-md uppercase text-on-surface-variant font-bold">
             Bilingual Engine
           </span>
@@ -171,7 +171,7 @@ export default function LandingPage() {
           </span>
         </div>
 
-        <div className="bg-surface-container p-space-md rounded-xl shadow-sm flex flex-col justify-between border border-surface-container-high">
+        <div className="card-interactive bg-surface-container p-space-md rounded-xl shadow-sm flex flex-col justify-between border border-surface-container-high cursor-default">
           <span className="font-label-md text-label-md uppercase text-on-surface-variant font-bold">
             Mean Ingestion Speed
           </span>
@@ -362,7 +362,7 @@ export default function LandingPage() {
           {/* Card 1 */}
           <Link
             href="/upload"
-            className="bg-surface-container p-space-lg rounded-xl shadow-sm flex flex-col justify-between hover:shadow-md hover:bg-surface-container-high transition-all border border-surface-container-high"
+            className="card-interactive bg-surface-container p-space-lg rounded-xl shadow-sm flex flex-col justify-between border border-surface-container-high"
           >
             <div>
               <div className="w-12 h-12 rounded-lg bg-primary-container text-on-primary flex items-center justify-center mb-space-md shadow">
@@ -384,7 +384,7 @@ export default function LandingPage() {
           {/* Card 2 */}
           <Link
             href="/ai-search"
-            className="bg-surface-container p-space-lg rounded-xl shadow-sm flex flex-col justify-between hover:shadow-md hover:bg-surface-container-high transition-all border border-surface-container-high"
+            className="card-interactive bg-surface-container p-space-lg rounded-xl shadow-sm flex flex-col justify-between border border-surface-container-high"
           >
             <div>
               <div className="w-12 h-12 rounded-lg bg-secondary text-on-secondary flex items-center justify-center mb-space-md shadow">
@@ -406,7 +406,7 @@ export default function LandingPage() {
           {/* Card 3 */}
           <Link
             href="/verification"
-            className="bg-surface-container p-space-lg rounded-xl shadow-sm flex flex-col justify-between hover:shadow-md hover:bg-surface-container-high transition-all border border-surface-container-high"
+            className="card-interactive bg-surface-container p-space-lg rounded-xl shadow-sm flex flex-col justify-between border border-surface-container-high"
           >
             <div>
               <div className="w-12 h-12 rounded-lg bg-tertiary-container text-on-tertiary-container flex items-center justify-center mb-space-md shadow">
@@ -428,7 +428,7 @@ export default function LandingPage() {
           {/* Card 4 */}
           <Link
             href="/map"
-            className="bg-surface-container p-space-lg rounded-xl shadow-sm flex flex-col justify-between hover:shadow-md hover:bg-surface-container-high transition-all border border-surface-container-high"
+            className="card-interactive bg-surface-container p-space-lg rounded-xl shadow-sm flex flex-col justify-between border border-surface-container-high"
           >
             <div>
               <div className="w-12 h-12 rounded-lg bg-primary text-on-primary flex items-center justify-center mb-space-md shadow">
@@ -450,7 +450,7 @@ export default function LandingPage() {
           {/* Card 5 */}
           <Link
             href="/ai-search"
-            className="bg-surface-container p-space-lg rounded-xl shadow-sm flex flex-col justify-between hover:shadow-md hover:bg-surface-container-high transition-all border border-surface-container-high"
+            className="card-interactive bg-surface-container p-space-lg rounded-xl shadow-sm flex flex-col justify-between border border-surface-container-high"
           >
             <div>
               <div className="w-12 h-12 rounded-lg bg-secondary-container text-on-secondary-container flex items-center justify-center mb-space-md shadow">
@@ -472,7 +472,7 @@ export default function LandingPage() {
           {/* Card 6 */}
           <Link
             href="/timetables"
-            className="bg-surface-container p-space-lg rounded-xl shadow-sm flex flex-col justify-between hover:shadow-md hover:bg-surface-container-high transition-all border border-surface-container-high"
+            className="card-interactive bg-surface-container p-space-lg rounded-xl shadow-sm flex flex-col justify-between border border-surface-container-high"
           >
             <div>
               <div className="w-12 h-12 rounded-lg bg-surface-tint text-on-primary flex items-center justify-center mb-space-md shadow">

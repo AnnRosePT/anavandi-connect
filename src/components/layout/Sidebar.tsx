@@ -94,8 +94,8 @@ export const Sidebar: React.FC = () => {
       >
         <div className="flex items-center gap-1.5">
           <span
-            className={`w-2 h-2 rounded-full ${
-              isOfficial ? "bg-[#b71c1c] animate-ping" : "bg-[#25803B]"
+            className={`w-2.5 h-2.5 rounded-full ${
+              isOfficial ? "bg-[#b71c1c] animate-radar-red" : "bg-[#25803B] animate-radar-green"
             }`}
           ></span>
           <span
@@ -123,10 +123,10 @@ export const Sidebar: React.FC = () => {
             <Link
               key={item.path}
               href={item.path}
-              className={`flex items-center justify-between px-space-md py-space-sm rounded-lg transition-all ${
+              className={`flex items-center justify-between px-space-md py-space-sm rounded-lg transition-all duration-200 ${
                 isActive
-                  ? "bg-primary-container text-on-primary font-medium shadow-sm"
-                  : "text-on-surface-variant hover:bg-surface-container hover:text-on-surface"
+                  ? "bg-primary-container text-on-primary font-medium shadow-sm translate-x-1"
+                  : "text-on-surface-variant hover:bg-surface-container hover:text-on-surface hover:translate-x-1"
               }`}
             >
               <div className="flex items-center gap-space-sm">

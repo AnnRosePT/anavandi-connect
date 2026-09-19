@@ -100,8 +100,8 @@ export const Header: React.FC<HeaderProps> = ({ onToggleMobileMenu }) => {
           }`}
         >
           <span
-            className={`w-2 h-2 rounded-full ${
-              isOfficial ? "bg-[#b71c1c] animate-ping" : "bg-[#25803B]"
+            className={`w-2.5 h-2.5 rounded-full ${
+              isOfficial ? "bg-[#b71c1c] animate-radar-red" : "bg-[#25803B] animate-radar-green"
             }`}
           ></span>
           <span>{isOfficial ? "KSRTC Official" : "Passenger"}</span>
@@ -185,7 +185,7 @@ export const Header: React.FC<HeaderProps> = ({ onToggleMobileMenu }) => {
           </button>
 
           {showProfileMenu && (
-            <div className="absolute right-0 mt-2 w-72 bg-surface-container-lowest rounded-2xl shadow-2xl border border-surface-container p-space-md z-50 animate-in fade-in slide-in-from-top-2">
+            <div className="absolute right-0 mt-2 w-72 bg-surface-container-lowest rounded-2xl shadow-2xl border border-surface-container p-space-md z-50 animate-fade-in-scale">
               {/* User Card */}
               <div className="flex items-center gap-3 pb-space-sm border-b border-surface-container mb-space-sm">
                 <div
