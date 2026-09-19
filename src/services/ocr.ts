@@ -562,6 +562,11 @@ export async function processTimetableImage(
 
       rawText = await callGeminiVision(base64, mimeType, apiKey.trim());
       timetable = parseGeminiResponse(rawText, fileName);
+      
+      if (!timetable || timetable.stops.length === 0) {
+        throw new InvalidTimetableImageError("Invalid image: The AI could not find any bus stops or timetable data in this image.");
+      }
+      
       providerUsed = "gemini_vision";
 
       steps[3].status = "completed";

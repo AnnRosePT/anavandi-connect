@@ -6,6 +6,7 @@ import { timetableStore } from "@/services/store";
 import { TimetableRecord } from "@/types/timetable";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { exportTimetableCsv, exportGtfsZip } from "@/services/exportService";
+import { RoleGate } from "@/components/auth/RoleGate";
 
 export default function DashboardPage() {
   const { t } = useLanguage();
@@ -28,7 +29,12 @@ export default function DashboardPage() {
   }, []);
 
   return (
-    <div className="w-full px-space-md sm:px-space-lg flex flex-col gap-space-lg pb-space-xl">
+    <RoleGate
+      requiredRole="official"
+      fallbackTitle="Depot Operations Command Center"
+      fallbackMessage="The command desk and fleet ingestion telemetry are restricted to verified KSRTC Depot Officers and Station Masters."
+    >
+      <div className="w-full px-space-md sm:px-space-lg flex flex-col gap-space-lg pb-space-xl">
       {/* Top Banner */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-space-sm bg-surface-container-low p-space-md rounded-xl border border-surface-container shadow-sm">
         <div>
@@ -252,6 +258,7 @@ export default function DashboardPage() {
           </table>
         </div>
       </div>
-    </div>
+      </div>
+    </RoleGate>
   );
 }

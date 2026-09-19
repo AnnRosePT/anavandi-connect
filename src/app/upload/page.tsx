@@ -3,6 +3,7 @@
 import React, { useState, useRef } from "react";
 import { useRouter } from "next/navigation";
 import { useLanguage } from "@/contexts/LanguageContext";
+import { RoleGate } from "@/components/auth/RoleGate";
 
 interface SampleFile {
   id: string;
@@ -170,7 +171,12 @@ export default function UploadPage() {
   };
 
   return (
-    <div className="w-full px-space-md sm:px-space-lg flex flex-col gap-space-lg pb-space-xl">
+    <RoleGate
+      requiredRole="official"
+      fallbackTitle="KSRTC Depot Ingestion (Official Portal)"
+      fallbackMessage="The OCR Roster Digitize engine is restricted to authenticated KSRTC Depot Officials. Passengers can submit community crowdsourced timetables via Community Upload."
+    >
+      <div className="w-full px-space-md sm:px-space-lg flex flex-col gap-space-lg pb-space-xl">
       {/* Title Header */}
       <div className="bg-surface-container-low p-space-md rounded-xl border border-surface-container flex flex-col sm:flex-row sm:items-center justify-between gap-space-sm shadow-sm">
         <div>
@@ -403,6 +409,7 @@ export default function UploadPage() {
           </div>
         </div>
       </div>
-    </div>
+      </div>
+    </RoleGate>
   );
 }

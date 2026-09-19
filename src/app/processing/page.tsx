@@ -4,6 +4,7 @@ import React, { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { processTimetableImage, OcrProcessingStep, ExtractionResult } from "@/services/ocr";
 import { timetableStore } from "@/services/store";
+import { RoleGate } from "@/components/auth/RoleGate";
 
 export default function ProcessingPage() {
   const router = useRouter();
@@ -103,7 +104,12 @@ export default function ProcessingPage() {
   };
 
   return (
-    <div className="w-full px-space-md sm:px-space-lg flex flex-col gap-space-lg pb-space-xl max-w-5xl mx-auto">
+    <RoleGate
+      requiredRole="official"
+      fallbackTitle="KSRTC Ingestion Pipeline (Official Only)"
+      fallbackMessage="Autonomous document intelligence and OCR roster processing is restricted to authorized KSRTC depot inspectors."
+    >
+      <div className="w-full px-space-md sm:px-space-lg flex flex-col gap-space-lg pb-space-xl max-w-5xl mx-auto">
       {/* Title */}
       <div className="bg-surface-container-low p-space-md rounded-xl border border-surface-container flex flex-col sm:flex-row sm:items-center justify-between gap-space-sm shadow-sm">
         <div>
@@ -347,5 +353,6 @@ export default function ProcessingPage() {
         )}
       </div>
     </div>
+    </RoleGate>
   );
 }

@@ -1,8 +1,9 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { useLanguage } from "@/contexts/LanguageContext";
+import { useAuth } from "@/contexts/AuthContext";
 import Link from "next/link";
 
 interface HeaderProps {
@@ -12,8 +13,13 @@ interface HeaderProps {
 export const Header: React.FC<HeaderProps> = ({ onToggleMobileMenu }) => {
   const router = useRouter();
   const { language, setLanguage, t } = useLanguage();
+  const { role, user, switchRole, logout } = useAuth();
   const [searchTerm, setSearchTerm] = useState("");
   const [showNotifications, setShowNotifications] = useState(false);
+  const [showProfileMenu, setShowProfileMenu] = useState(false);
+  const profileMenuRef = useRef<HTMLDivElement>(null);
+
+  const isOfficial = role === "official";
 
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
@@ -21,6 +27,17 @@ export const Header: React.FC<HeaderProps> = ({ onToggleMobileMenu }) => {
       router.push(`/search?q=${encodeURIComponent(searchTerm.trim())}`);
     }
   };
+
+  // Close dropdown on click outside
+  useEffect(() => {
+    const handleClickOutside = (e: MouseEvent) => {
+      if (profileMenuRef.current && !profileMenuRef.current.contains(e.target as Node)) {
+        setShowProfileMenu(false);
+      }
+    };
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
 
   return (
     <header className="fixed top-0 left-0 lg:left-72 right-0 h-16 bg-surface/85 backdrop-blur-xl shadow-[0_1px_8px_rgba(0,0,0,0.04)] z-40 flex items-center justify-between px-space-md sm:px-space-lg">
@@ -55,21 +72,39 @@ export const Header: React.FC<HeaderProps> = ({ onToggleMobileMenu }) => {
 
       {/* Right Controls */}
       <div className="flex items-center gap-space-xs sm:gap-space-md">
-        {/* Book a Ticket Quick Button */}
-        <Link
-          href="/upload"
-          className="hidden md:flex items-center gap-1.5 px-space-sm py-1.5 rounded-lg bg-[#d32f2f] text-white font-label-md text-label-md font-bold uppercase tracking-wider shadow-sm hover:brightness-110 active:translate-y-0.5 transition-all"
-        >
-          <span className="material-symbols-outlined text-sm">directions_bus</span>
-          <span>Book Ticket</span>
-        </Link>
+        {/* Quick Action Button based on Role */}
+        {isOfficial ? (
+          <Link
+            href="/upload"
+            className="hidden md:flex items-center gap-1.5 px-space-sm py-1.5 rounded-lg bg-[#b71c1c] text-white font-label-md text-xs font-bold uppercase tracking-wider shadow-sm hover:brightness-110 active:translate-y-0.5 transition-all"
+          >
+            <span className="material-symbols-outlined text-sm">upload_file</span>
+            <span>Digitize Roster</span>
+          </Link>
+        ) : (
+          <Link
+            href="/search"
+            className="hidden md:flex items-center gap-1.5 px-space-sm py-1.5 rounded-lg bg-[#25803B] text-white font-label-md text-xs font-bold uppercase tracking-wider shadow-sm hover:brightness-110 active:translate-y-0.5 transition-all"
+          >
+            <span className="material-symbols-outlined text-sm">directions_bus</span>
+            <span>Find Buses</span>
+          </Link>
+        )}
 
-        {/* KSRTC Swift Live Status Badge */}
-        <div className="hidden sm:flex items-center gap-space-xs px-space-sm py-1 rounded bg-[#b71c1c]/10 border border-[#b71c1c]/20">
-          <span className="w-2 h-2 rounded-full bg-[#b71c1c] animate-ping"></span>
-          <span className="font-label-md text-label-md uppercase font-semibold text-[#b71c1c]">
-            KSRTC SWIFT Live
-          </span>
+        {/* Live Role Badge */}
+        <div
+          className={`hidden sm:flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-label-md font-bold uppercase tracking-wide border ${
+            isOfficial
+              ? "bg-[#b71c1c]/10 text-[#b71c1c] border-[#b71c1c]/25"
+              : "bg-[#25803B]/10 text-[#25803B] border-[#25803B]/25"
+          }`}
+        >
+          <span
+            className={`w-2 h-2 rounded-full ${
+              isOfficial ? "bg-[#b71c1c] animate-ping" : "bg-[#25803B]"
+            }`}
+          ></span>
+          <span>{isOfficial ? "KSRTC Official" : "Passenger"}</span>
         </div>
 
         {/* Language Switcher */}
@@ -88,7 +123,7 @@ export const Header: React.FC<HeaderProps> = ({ onToggleMobileMenu }) => {
           <button
             onClick={() => setShowNotifications(!showNotifications)}
             className="relative p-1.5 rounded-lg hover:bg-surface-container text-on-surface-variant hover:text-on-surface transition-colors"
-            title="Depot Notifications"
+            title="Notifications"
           >
             <span className="material-symbols-outlined">notifications</span>
             <span className="absolute top-1 right-1 w-2 h-2 rounded-full bg-primary"></span>
@@ -103,34 +138,146 @@ export const Header: React.FC<HeaderProps> = ({ onToggleMobileMenu }) => {
               <div className="space-y-space-xs">
                 <div className="p-2 rounded bg-[#25803B]/5 border border-[#25803B]/10 text-body-md text-on-surface">
                   <div className="font-bold text-xs text-[#25803B]">✓ KSRTC SWIFT Booking Open</div>
-                  <div className="text-xs text-on-surface-variant">Thiruvananthapuram → Kasaragod Super Fast service now bookable online.</div>
+                  <div className="text-xs text-on-surface-variant">Thiruvananthapuram → Kasaragod Super Fast service now active.</div>
                 </div>
-                <div className="p-2 rounded bg-surface-container-low text-body-md text-on-surface">
-                  <div className="font-bold text-xs text-[#E72A01]">⚠ Timetable Discrepancy</div>
-                  <div className="text-xs text-on-surface-variant">KL-15-TRV-CAN-0824: Handwritten departure correction at Alappuzha depot requires review.</div>
-                </div>
+                {isOfficial && (
+                  <div className="p-2 rounded bg-surface-container-low text-body-md text-on-surface">
+                    <div className="font-bold text-xs text-[#E72A01]">⚠ Timetable Discrepancy</div>
+                    <div className="text-xs text-on-surface-variant">Alappuzha depot: Handwritten departure revision requires inspector review.</div>
+                  </div>
+                )}
                 <div className="p-2 rounded bg-surface-container text-body-md text-on-surface">
-                  <div className="font-bold text-xs text-secondary">GTFS Feed Updated</div>
-                  <div className="text-xs text-on-surface-variant">Parassala – Kasaragod trunk line GTFS feed regenerated at 05:40 AM IST.</div>
+                  <div className="font-bold text-xs text-secondary">GTFS Feed Distribution</div>
+                  <div className="text-xs text-on-surface-variant">Trunk line GTFS feed refreshed for passenger apps.</div>
                 </div>
               </div>
             </div>
           )}
         </div>
 
-        {/* Profile Avatar */}
-        <div className="flex items-center gap-space-sm pl-space-xs">
-          <div className="w-8 h-8 rounded-full bg-[#b71c1c] flex items-center justify-center shadow-sm ring-2 ring-[#ffb300] font-bold text-white text-xs">
-            KD
-          </div>
-          <div className="hidden xl:flex flex-col text-left">
-            <span className="font-title-md text-label-lg font-bold leading-tight text-on-surface">
-              KSRTC Officer
+        {/* Profile Avatar & Role Switcher Dropdown */}
+        <div className="relative" ref={profileMenuRef}>
+          <button
+            onClick={() => setShowProfileMenu(!showProfileMenu)}
+            className="flex items-center gap-space-sm p-1 rounded-xl hover:bg-surface-container transition-all"
+            title="Account & Portal Switcher"
+          >
+            <div
+              className={`w-8 h-8 rounded-full flex items-center justify-center shadow-sm font-bold text-white text-xs ${
+                isOfficial
+                  ? "bg-[#b71c1c] ring-2 ring-[#ffb300]"
+                  : "bg-[#25803B] ring-2 ring-emerald-300"
+              }`}
+            >
+              {isOfficial ? "KO" : "PS"}
+            </div>
+            <div className="hidden xl:flex flex-col text-left">
+              <span className="font-title-md text-label-lg font-bold leading-tight text-on-surface">
+                {user.name}
+              </span>
+              <span className="font-label-md text-xs text-on-surface-variant truncate max-w-[140px]">
+                {isOfficial ? (user.depot?.split(" ")[0] || "Depot Officer") : "Commuter"}
+              </span>
+            </div>
+            <span className="material-symbols-outlined text-sm text-on-surface-variant">
+              expand_more
             </span>
-            <span className="font-label-md text-label-md text-on-surface-variant">
-              Thampanoor Depot
-            </span>
-          </div>
+          </button>
+
+          {showProfileMenu && (
+            <div className="absolute right-0 mt-2 w-72 bg-surface-container-lowest rounded-2xl shadow-2xl border border-surface-container p-space-md z-50 animate-in fade-in slide-in-from-top-2">
+              {/* User Card */}
+              <div className="flex items-center gap-3 pb-space-sm border-b border-surface-container mb-space-sm">
+                <div
+                  className={`w-10 h-10 rounded-full flex items-center justify-center font-bold text-white text-sm shrink-0 ${
+                    isOfficial ? "bg-[#b71c1c]" : "bg-[#25803B]"
+                  }`}
+                >
+                  {isOfficial ? "KO" : "PS"}
+                </div>
+                <div className="min-w-0 flex-1">
+                  <div className="font-bold text-sm text-on-surface truncate">{user.name}</div>
+                  <div className="text-xs text-on-surface-variant truncate">{user.designation}</div>
+                  <span
+                    className={`inline-block px-1.5 py-0.2 mt-0.5 rounded text-[10px] font-extrabold uppercase tracking-wider ${
+                      isOfficial
+                        ? "bg-[#b71c1c]/10 text-[#b71c1c]"
+                        : "bg-[#25803B]/10 text-[#25803B]"
+                    }`}
+                  >
+                    {isOfficial ? "KSRTC Official" : "Normal Passenger"}
+                  </span>
+                </div>
+              </div>
+
+              {/* Persona Switch Button */}
+              <div className="space-y-1 mb-space-sm">
+                <span className="text-[11px] font-label-md font-bold uppercase text-on-surface-variant tracking-wider block mb-1">
+                  Quick Portal Switch
+                </span>
+
+                {isOfficial ? (
+                  <button
+                    onClick={() => {
+                      switchRole("passenger");
+                      setShowProfileMenu(false);
+                      router.push("/search");
+                    }}
+                    className="w-full text-left px-3 py-2 rounded-xl bg-[#25803B]/10 hover:bg-[#25803B]/20 text-[#25803B] font-label-md text-xs font-bold transition-colors flex items-center gap-2"
+                  >
+                    <span className="material-symbols-outlined text-base">commute</span>
+                    <div className="flex-1">
+                      <div>Switch to Passenger Mode</div>
+                      <div className="text-[10px] text-on-surface-variant font-normal">
+                        Browse bus search &amp; live routes
+                      </div>
+                    </div>
+                  </button>
+                ) : (
+                  <button
+                    onClick={() => {
+                      switchRole("official");
+                      setShowProfileMenu(false);
+                      router.push("/dashboard");
+                    }}
+                    className="w-full text-left px-3 py-2 rounded-xl bg-[#b71c1c]/10 hover:bg-[#b71c1c]/20 text-[#b71c1c] font-label-md text-xs font-bold transition-colors flex items-center gap-2"
+                  >
+                    <span className="material-symbols-outlined text-base">badge</span>
+                    <div className="flex-1">
+                      <div>Switch to KSRTC Official</div>
+                      <div className="text-[10px] text-on-surface-variant font-normal">
+                        Access depot roster &amp; verification
+                      </div>
+                    </div>
+                  </button>
+                )}
+              </div>
+
+              {/* Login Page Link & Sign Out */}
+              <div className="pt-space-xs border-t border-surface-container space-y-1">
+                <Link
+                  href="/login"
+                  onClick={() => setShowProfileMenu(false)}
+                  className="w-full px-3 py-1.5 rounded-lg text-left text-xs font-medium text-on-surface hover:bg-surface-container flex items-center gap-2"
+                >
+                  <span className="material-symbols-outlined text-sm">login</span>
+                  <span>Switch Account / Re-login</span>
+                </Link>
+
+                <button
+                  onClick={() => {
+                    logout();
+                    setShowProfileMenu(false);
+                    router.push("/login");
+                  }}
+                  className="w-full px-3 py-1.5 rounded-lg text-left text-xs font-medium text-red-500 hover:bg-red-50 flex items-center gap-2"
+                >
+                  <span className="material-symbols-outlined text-sm">logout</span>
+                  <span>Sign Out</span>
+                </button>
+              </div>
+            </div>
+          )}
         </div>
       </div>
     </header>

@@ -9,6 +9,7 @@ import { StructuredTable } from "@/components/verification/StructuredTable";
 import { CellDeepDive } from "@/components/verification/CellDeepDive";
 import { validateTimetable, ValidationResult } from "@/services/validation";
 import { exportTimetableCsv, exportTimetableJson, exportGtfsZip, exportTimetablePdf } from "@/services/exportService";
+import { RoleGate } from "@/components/auth/RoleGate";
 
 function VerificationContent() {
   const searchParams = useSearchParams();
@@ -370,7 +371,13 @@ function VerificationContent() {
 export default function VerificationPage() {
   return (
     <Suspense fallback={<div className="p-space-xl text-center font-label-md">Loading verification workspace...</div>}>
-      <VerificationContent />
+      <RoleGate
+        requiredRole="official"
+        fallbackTitle="Depot Verification Queue (KSRTC Official)"
+        fallbackMessage="The verification workspace is restricted to authorized KSRTC Station Masters and Depot Inspectors for resolving conductor handwriting anomalies and certifying schedules."
+      >
+        <VerificationContent />
+      </RoleGate>
     </Suspense>
   );
 }

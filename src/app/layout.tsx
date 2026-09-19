@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import { LanguageProvider } from "@/contexts/LanguageContext";
+import { AuthProvider } from "@/contexts/AuthContext";
 import { Sidebar } from "@/components/layout/Sidebar";
 import { Header } from "@/components/layout/Header";
 import { MobileNav } from "@/components/layout/MobileNav";
@@ -48,16 +49,18 @@ export default function RootLayout({
       </head>
       <body className="bg-background font-body-md text-body-md text-on-surface antialiased min-h-screen">
         <LanguageProvider>
-          <div className="flex min-h-screen">
-            <Sidebar />
-            <div className="flex-1 flex flex-col w-full lg:pl-72 min-h-screen">
-              <Header />
-              <main className="w-full flex-1 pt-16 pb-20 lg:pb-8 bg-background">
-                {children}
-              </main>
-              <MobileNav />
+          <AuthProvider>
+            <div className="flex min-h-screen">
+              <Sidebar />
+              <div className="flex-1 flex flex-col w-full lg:pl-72 min-h-screen">
+                <Header />
+                <main className="w-full flex-1 pt-16 pb-20 lg:pb-8 bg-background">
+                  {children}
+                </main>
+                <MobileNav />
+              </div>
             </div>
-          </div>
+          </AuthProvider>
         </LanguageProvider>
       </body>
     </html>

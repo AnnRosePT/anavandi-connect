@@ -48,7 +48,7 @@ export default function LandingPage() {
 
             <div className="pt-space-sm flex flex-wrap items-center gap-space-md">
               <Link
-                href="/upload"
+                href="/login"
                 className="flex items-center gap-space-xs px-space-lg py-space-sm bg-[#ffb300] text-[#7f0000] font-headline-sm text-headline-sm rounded-lg hover:brightness-110 active:translate-y-0.5 transition shadow-lg font-bold"
               >
                 <span className="material-symbols-outlined">person</span>
