@@ -17,7 +17,7 @@ interface SampleFile {
 const DEMO_SAMPLES: SampleFile[] = [
   {
     id: "sample-1",
-    name: "KSRTC_LOG_1984_OCT_CAN0824.TIFF",
+    name: "Demo: Trivandrum → Kannur",
     type: "image/tiff",
     size: "1.4 MB",
     previewUrl:
@@ -26,7 +26,7 @@ const DEMO_SAMPLES: SampleFile[] = [
   },
   {
     id: "sample-2",
-    name: "MUNNAR_HIGHRANGE_WALL_SHEET.PNG",
+    name: "Demo: Trivandrum → Munnar",
     type: "image/png",
     size: "820 KB",
     previewUrl:
@@ -35,7 +35,7 @@ const DEMO_SAMPLES: SampleFile[] = [
   },
   {
     id: "sample-3",
-    name: "TCR_ERS_COMMUTER_SCHEDULE.PDF",
+    name: "Demo: Thrissur → Ernakulam",
     type: "application/pdf",
     size: "540 KB",
     previewUrl:
@@ -173,8 +173,8 @@ export default function UploadPage() {
   return (
     <RoleGate
       requiredRole="official"
-      fallbackTitle="KSRTC Depot Ingestion (Official Portal)"
-      fallbackMessage="The OCR Roster Digitize engine is restricted to authenticated KSRTC Depot Officials. Passengers can submit community crowdsourced timetables via Community Upload."
+      fallbackTitle="AI Timetable Extraction (Prototype)"
+      fallbackMessage="This is a prototype module for the hackathon. It demonstrates how paper schedules are ingested and digitized."
     >
       <div className="w-full px-space-md sm:px-space-lg flex flex-col gap-space-lg pb-space-xl">
       {/* Title Header */}

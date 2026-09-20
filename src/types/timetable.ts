@@ -9,7 +9,9 @@ export type ServiceClass =
 export type TimetableStatus = 
   | "DRAFT"
   | "PENDING_VERIFICATION"
+  | "IN_REVIEW"
   | "VERIFIED"
+  | "REJECTED"
   | "PUBLISHED";
 
 export interface GeoLocation {

@@ -655,10 +655,12 @@ class TimetableStore {
   }
 
   public getStats() {
-    const totalDigitized = 1248 + this.timetables.length - 6;
-    const pendingVerification = this.timetables.filter((t) => t.status === "PENDING_VERIFICATION" || t.status === "DRAFT").length + 36;
-    const routesProcessed = 486 + Math.floor(this.timetables.length / 2);
-    const avgConfidence = 96.8;
+    const totalDigitized = this.timetables.length;
+    const pendingVerification = this.timetables.filter((t) => t.status === "PENDING_VERIFICATION" || t.status === "DRAFT").length;
+    const routesProcessed = new Set(this.timetables.map(t => t.routeCode)).size;
+    const avgConfidence = this.timetables.length > 0 
+      ? Number((this.timetables.reduce((acc, t) => acc + t.overallConfidence, 0) / this.timetables.length).toFixed(1))
+      : 0;
 
     return {
       totalDigitized,

@@ -31,8 +31,8 @@ export default function DashboardPage() {
   return (
     <RoleGate
       requiredRole="official"
-      fallbackTitle="Depot Operations Command Center"
-      fallbackMessage="The command desk and fleet ingestion telemetry are restricted to verified KSRTC Depot Officers and Station Masters."
+      fallbackTitle="Operations Dashboard (Prototype)"
+      fallbackMessage="This is a prototype dashboard for the Anavandi Connect Hackathon."
     >
       <div className="w-full px-space-md sm:px-space-lg flex flex-col gap-space-lg pb-space-xl">
       {/* Top Banner */}
@@ -41,7 +41,7 @@ export default function DashboardPage() {
           <div className="flex items-center gap-2">
             <span className="w-2.5 h-2.5 rounded-full bg-[#b71c1c] animate-radar-red"></span>
             <span className="font-label-md text-label-md uppercase tracking-wider text-secondary font-bold flex items-center gap-1.5">
-              <span>Depot Operations Command Center</span>
+              <span>Operations Dashboard (Prototype)</span>
               <span className="text-[10px] bg-secondary-container/40 px-1.5 py-0.2 rounded font-mono text-on-secondary-container">LIVE TELEMETRY</span>
             </span>
           </div>

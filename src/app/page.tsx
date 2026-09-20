@@ -28,10 +28,10 @@ export default function LandingPage() {
             <div className="inline-flex items-center gap-space-xs px-space-sm py-1.5 bg-white/10 backdrop-blur-md rounded-lg w-fit border border-white/20">
               <img src="/assets/new-logo.png" alt="AnaVandi" className="w-7 h-7 rounded-full border border-[#ffb300]" />
               <span className="font-label-md text-label-md uppercase tracking-wider text-[#ffb300] font-bold">
-                KSRTC-SWIFT | ENTE KSRTC
+                ANAVANDI 2026 • PROTOTYPE
               </span>
               <span className="font-label-md text-label-md text-[#d32f2f] bg-[#ffb300] px-1.5 py-0.5 rounded font-bold">
-                Neo-oprs
+                Demo
               </span>
             </div>
 
@@ -41,41 +41,40 @@ export default function LandingPage() {
             </h1>
 
             <p className="font-body-lg text-body-lg text-white/80 max-w-2xl leading-relaxed">
-              <strong className="text-[#ffb300]">LOGIN / SIGNUP</strong> — Connect with Kerala State Road
-              Transport Corporation (KSRTC) to earn loyalty benefits.
-              AI-powered timetable digitization &amp; GTFS-ready schedule verification.
+              <strong className="text-[#ffb300]">Turn Printed Timetables Into Verified Digital Transit Data</strong> — Scan. Verify. Publish.
+              An AI-powered timetable digitization &amp; GTFS-ready schedule verification prototype.
             </p>
 
             <div className="pt-space-sm flex flex-wrap items-center gap-space-md">
               <Link
-                href="/login"
+                href="/upload"
                 className="btn-tactile flex items-center gap-space-xs px-space-lg py-space-sm bg-[#ffb300] text-[#7f0000] font-headline-sm text-headline-sm rounded-lg hover:brightness-110 shadow-lg font-bold transition-all"
               >
-                <span className="material-symbols-outlined">person</span>
-                <span>Login / Signup</span>
+                <span className="material-symbols-outlined">upload</span>
+                <span>Upload Timetable</span>
               </Link>
 
               <Link
-                href="/search"
+                href="/dashboard"
                 className="btn-tactile flex items-center gap-space-xs px-space-lg py-space-sm bg-white/10 hover:bg-white/20 text-white font-title-md text-title-md rounded-lg transition-all border border-white/30 backdrop-blur-sm"
               >
-                <span className="material-symbols-outlined">search</span>
-                <span>{t("searchBuses")}</span>
+                <span className="material-symbols-outlined">explore</span>
+                <span>Explore Demo</span>
               </Link>
             </div>
 
             <div className="pt-space-sm flex flex-wrap items-center gap-space-lg text-white/70">
               <div className="flex items-center gap-1.5 font-label-md text-label-md uppercase">
                 <span className="material-symbols-outlined text-[#ffb300] text-sm">verified</span>
-                <span>Ashok Leyland Certified Roster</span>
+                <span>AI-Powered Extraction</span>
               </div>
               <div className="flex items-center gap-1.5 font-label-md text-label-md uppercase">
                 <span className="material-symbols-outlined text-[#ffb300] text-sm">translate</span>
                 <span>Malayalam + English OCR</span>
               </div>
               <div className="flex items-center gap-1.5 font-label-md text-label-md uppercase">
-                <span className="material-symbols-outlined text-[#ffb300] text-sm">loyalty</span>
-                <span>Ente KSRTC Loyalty Points</span>
+                <span className="material-symbols-outlined text-[#ffb300] text-sm">edit_document</span>
+                <span>Human-In-The-Loop Validation</span>
               </div>
             </div>
           </div>
@@ -92,10 +91,10 @@ export default function LandingPage() {
                 />
                 <div className="absolute bottom-0 inset-x-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent p-space-sm text-white">
                   <span className="font-label-md text-label-md uppercase tracking-wider text-[#ffb300]">
-                    KL 15 0007 · Ashok Leyland
+                    Prototype OCR pipeline
                   </span>
                   <p className="font-title-md text-title-md font-bold">
-                    KSRTC SWIFT Super Fast Express
+                    Demo Timetable Ingestion
                   </p>
                 </div>
               </div>
@@ -104,7 +103,7 @@ export default function LandingPage() {
               <div className="mt-space-sm bg-surface-container-lowest p-space-md rounded-lg shadow-md text-on-surface">
                 <div className="flex items-center justify-between pb-space-xs mb-space-xs bg-surface-container-low px-space-sm py-1 rounded">
                   <span className="font-label-md text-label-md uppercase font-bold text-primary">
-                    Live OCR Stream
+                    OCR Stream
                   </span>
                   <span className="font-label-md text-label-md bg-secondary text-on-secondary px-1.5 py-0.5 rounded animate-pulse">
                     Processing Block #932

@@ -103,11 +103,20 @@ export default function ProcessingPage() {
     router.push("/verification");
   };
 
+  useEffect(() => {
+    if (isDone && result && !isFailed) {
+      const timer = setTimeout(() => {
+        router.push("/verification");
+      }, 2000);
+      return () => clearTimeout(timer);
+    }
+  }, [isDone, result, isFailed, router]);
+
   return (
     <RoleGate
       requiredRole="official"
-      fallbackTitle="KSRTC Ingestion Pipeline (Official Only)"
-      fallbackMessage="Autonomous document intelligence and OCR roster processing is restricted to authorized KSRTC depot inspectors."
+      fallbackTitle="AI Timetable Extraction (Prototype)"
+      fallbackMessage="This is a prototype module for the hackathon. It demonstrates how paper schedules are ingested and digitized."
     >
       <div className="w-full px-space-md sm:px-space-lg flex flex-col gap-space-lg pb-space-xl max-w-5xl mx-auto">
       {/* Title */}
