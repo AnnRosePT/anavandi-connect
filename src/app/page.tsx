@@ -5,6 +5,8 @@ import Link from "next/link";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { timetableStore } from "@/services/store";
 import { exportGtfsZip } from "@/services/exportService";
+import { openRolePrompt } from "@/components/auth/RoleModalPrompt";
+import { soundService } from "@/services/soundEffects";
 
 export default function LandingPage() {
   const { t } = useLanguage();
@@ -45,14 +47,34 @@ export default function LandingPage() {
               An AI-powered timetable digitization &amp; GTFS-ready schedule verification prototype.
             </p>
 
-            <div className="pt-space-sm flex flex-wrap items-center gap-space-md">
-              <Link
-                href="/upload"
+            {/* Alarm / Notification Banner inside Hero */}
+            <div className="flex flex-wrap items-center justify-between gap-2 p-2.5 rounded-lg bg-black/25 border border-white/20 backdrop-blur-md text-xs text-white">
+              <div className="flex items-center gap-2">
+                <span className="relative flex h-2.5 w-2.5">
+                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#ffb300] opacity-75"></span>
+                  <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-[#ffb300]"></span>
+                </span>
+                <span>
+                  <strong className="text-[#ffb300]">Transit Notice:</strong> Choose between <strong>Official Depot Digitizer</strong> and <strong>Passenger Travel Portal</strong>.
+                </span>
+              </div>
+              <button
+                onClick={() => openRolePrompt("welcome")}
+                className="inline-flex items-center gap-1 px-2.5 py-1 rounded bg-[#ffb300] text-[#7f0000] font-bold text-[11px] uppercase tracking-wider hover:brightness-110 shadow-sm transition-all"
+              >
+                <span className="material-symbols-outlined text-xs">notifications_active</span>
+                <span>Choose Role</span>
+              </button>
+            </div>
+
+            <div className="pt-space-xs flex flex-wrap items-center gap-space-md">
+              <button
+                onClick={() => openRolePrompt("upload_intent")}
                 className="btn-tactile flex items-center gap-space-xs px-space-lg py-space-sm bg-[#ffb300] text-[#7f0000] font-headline-sm text-headline-sm rounded-lg hover:brightness-110 shadow-lg font-bold transition-all"
               >
                 <span className="material-symbols-outlined">upload</span>
                 <span>Upload Timetable</span>
-              </Link>
+              </button>
 
               <Link
                 href="/dashboard"

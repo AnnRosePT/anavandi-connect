@@ -5,6 +5,7 @@ import { AuthProvider } from "@/contexts/AuthContext";
 import { Sidebar } from "@/components/layout/Sidebar";
 import { Header } from "@/components/layout/Header";
 import { MobileNav } from "@/components/layout/MobileNav";
+import { RoleModalPrompt } from "@/components/auth/RoleModalPrompt";
 
 export const metadata: Metadata = {
   title: "AnaVandi Connect | Kerala KSRTC AI Timetable Platform",
@@ -58,6 +59,7 @@ export default function RootLayout({
                   {children}
                 </main>
                 <MobileNav />
+                <RoleModalPrompt />
               </div>
             </div>
           </AuthProvider>

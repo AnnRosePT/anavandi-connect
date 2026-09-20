@@ -4,6 +4,8 @@ import React, { useState, useRef, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { useAuth } from "@/contexts/AuthContext";
+import { openRolePrompt } from "@/components/auth/RoleModalPrompt";
+import { soundService } from "@/services/soundEffects";
 import Link from "next/link";
 
 interface HeaderProps {
@@ -91,13 +93,15 @@ export const Header: React.FC<HeaderProps> = ({ onToggleMobileMenu }) => {
           </Link>
         )}
 
-        {/* Live Role Badge */}
-        <div
-          className={`hidden sm:flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-label-md font-bold uppercase tracking-wide border ${
+        {/* Live Role Badge / Portal Switcher */}
+        <button
+          onClick={() => openRolePrompt("manual")}
+          className={`hidden sm:flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-label-md font-bold uppercase tracking-wide border cursor-pointer hover:shadow-sm active:scale-95 transition-all ${
             isOfficial
-              ? "bg-[#b71c1c]/10 text-[#b71c1c] border-[#b71c1c]/25"
-              : "bg-[#25803B]/10 text-[#25803B] border-[#25803B]/25"
+              ? "bg-[#b71c1c]/10 text-[#b71c1c] border-[#b71c1c]/25 hover:bg-[#b71c1c]/20"
+              : "bg-[#25803B]/10 text-[#25803B] border-[#25803B]/25 hover:bg-[#25803B]/20"
           }`}
+          title="Click to Switch Portal Mode (Official / Passenger)"
         >
           <span
             className={`w-2.5 h-2.5 rounded-full ${
@@ -105,7 +109,8 @@ export const Header: React.FC<HeaderProps> = ({ onToggleMobileMenu }) => {
             }`}
           ></span>
           <span>{isOfficial ? "KSRTC Official" : "Passenger"}</span>
-        </div>
+          <span className="material-symbols-outlined text-xs opacity-70">swap_horiz</span>
+        </button>
 
         {/* Language Switcher */}
         <button
@@ -121,21 +126,53 @@ export const Header: React.FC<HeaderProps> = ({ onToggleMobileMenu }) => {
         {/* Notifications Button */}
         <div className="relative">
           <button
-            onClick={() => setShowNotifications(!showNotifications)}
+            onClick={() => {
+              setShowNotifications(!showNotifications);
+              if (!showNotifications) {
+                soundService.playAlarmAlert();
+              }
+            }}
             className="relative p-1.5 rounded-lg hover:bg-surface-container text-on-surface-variant hover:text-on-surface transition-colors"
-            title="Notifications"
+            title="Notifications & Role Alert"
           >
             <span className="material-symbols-outlined">notifications</span>
+            <span className="absolute top-1 right-1 w-2 h-2 rounded-full bg-primary animate-ping"></span>
             <span className="absolute top-1 right-1 w-2 h-2 rounded-full bg-primary"></span>
           </button>
 
           {showNotifications && (
             <div className="absolute right-0 mt-2 w-80 bg-surface-container-lowest rounded-xl shadow-xl border border-surface-container p-space-md z-50 animate-in fade-in slide-in-from-top-2">
               <div className="flex items-center justify-between pb-space-xs border-b border-surface-container mb-space-xs">
-                <span className="font-title-md text-title-md font-bold text-on-surface">KSRTC Alerts</span>
-                <span className="font-label-md text-label-md bg-[#E72A01] text-white px-1.5 py-0.5 rounded font-bold">3 New</span>
+                <span className="font-title-md text-title-md font-bold text-on-surface">Transit Alerts</span>
+                <span className="font-label-md text-label-md bg-[#E72A01] text-white px-1.5 py-0.5 rounded font-bold">Role Alert</span>
               </div>
               <div className="space-y-space-xs">
+                {/* Role Switcher Notification Card */}
+                <div className="p-2.5 rounded-lg bg-[#ffb300]/15 border border-[#ffb300]/40 text-on-surface">
+                  <div className="flex items-center justify-between">
+                    <div className="font-bold text-xs text-[#7f0000] flex items-center gap-1">
+                      <span className="material-symbols-outlined text-sm">crisis_alert</span>
+                      <span>Portal Mode Notice</span>
+                    </div>
+                    <span className="text-[10px] px-1.5 py-0.2 bg-[#ffb300] text-[#7f0000] font-bold rounded">
+                      Action
+                    </span>
+                  </div>
+                  <p className="text-xs text-on-surface-variant mt-1">
+                    Choose <strong>Official (Depot OCR)</strong> or <strong>Passenger (Community)</strong> mode.
+                  </p>
+                  <button
+                    onClick={() => {
+                      setShowNotifications(false);
+                      openRolePrompt("upload_intent");
+                    }}
+                    className="mt-2 w-full py-1 bg-primary text-white rounded text-[11px] font-bold uppercase tracking-wider hover:brightness-110 shadow-sm flex items-center justify-center gap-1"
+                  >
+                    <span className="material-symbols-outlined text-xs">tune</span>
+                    <span>Switch Role / Upload Mode</span>
+                  </button>
+                </div>
+
                 <div className="p-2 rounded bg-[#25803B]/5 border border-[#25803B]/10 text-body-md text-on-surface">
                   <div className="font-bold text-xs text-[#25803B]">✓ KSRTC SWIFT Booking Open</div>
                   <div className="text-xs text-on-surface-variant">Thiruvananthapuram → Kasaragod Super Fast service now active.</div>

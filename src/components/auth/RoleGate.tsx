@@ -4,6 +4,7 @@ import React from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useAuth, UserRole } from "@/contexts/AuthContext";
+import { soundService } from "@/services/soundEffects";
 
 interface RoleGateProps {
   requiredRole: UserRole;
@@ -68,7 +69,10 @@ export const RoleGate: React.FC<RoleGateProps> = ({
           {isOfficialRequired ? (
             <>
               <button
-                onClick={() => switchRole("official")}
+                onClick={() => {
+                  soundService.playTransitChime();
+                  switchRole("official");
+                }}
                 className="w-full sm:w-auto flex-1 py-3 px-space-md rounded-lg bg-[#b71c1c] hover:bg-[#8f1414] text-white font-label-md text-sm font-bold uppercase tracking-wider shadow-md transition-all flex items-center justify-center gap-2"
               >
                 <span className="material-symbols-outlined text-base">badge</span>
@@ -76,11 +80,19 @@ export const RoleGate: React.FC<RoleGateProps> = ({
               </button>
 
               <Link
+                href="/community-upload"
+                className="w-full sm:w-auto py-3 px-space-md rounded-lg bg-[#25803B] hover:bg-[#1e662f] text-white font-label-md text-sm font-bold transition-all flex items-center justify-center gap-1.5 shadow-sm"
+              >
+                <span className="material-symbols-outlined text-base">add_photo_alternate</span>
+                <span>Passenger Upload</span>
+              </Link>
+
+              <Link
                 href="/login"
                 className="w-full sm:w-auto py-3 px-space-md rounded-lg bg-surface-container hover:bg-surface-container-high text-on-surface font-label-md text-sm font-bold transition-all flex items-center justify-center gap-1.5"
               >
                 <span className="material-symbols-outlined text-base">login</span>
-                <span>Official Login</span>
+                <span>Login</span>
               </Link>
             </>
           ) : (
