@@ -3,6 +3,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import { TimetableRecord } from "@/types/timetable";
 import { KERALA_COORDINATES } from "@/services/store";
+import { getCanonicalStationName } from "@/services/locationUtils";
 
 interface RouteMapProps {
   timetable: TimetableRecord;
@@ -39,7 +40,7 @@ export const RouteMap: React.FC<RouteMapProps> = ({
 
         // Calculate center or bounds
         const validCoords = timetable.stops
-          .map((s) => s.coordinates || KERALA_COORDINATES[s.name])
+          .map((s) => s.coordinates || KERALA_COORDINATES[s.name] || KERALA_COORDINATES[getCanonicalStationName(s.name)])
           .filter(Boolean) as { lat: number; lng: number }[];
 
         const centerLat = validCoords.length > 0 ? validCoords[Math.floor(validCoords.length / 2)].lat : 10.0;
@@ -79,7 +80,7 @@ export const RouteMap: React.FC<RouteMapProps> = ({
 
         // Add markers
         timetable.stops.forEach((stop, idx) => {
-          const coords = stop.coordinates || KERALA_COORDINATES[stop.name];
+          const coords = stop.coordinates || KERALA_COORDINATES[stop.name] || KERALA_COORDINATES[getCanonicalStationName(stop.name)];
           if (!coords) return;
 
           const isOrigin = idx === 0;

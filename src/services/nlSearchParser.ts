@@ -1,5 +1,6 @@
 import { TimetableRecord, ServiceClass } from "@/types/timetable";
 import { timetableStore } from "./store";
+import { matchesPlace } from "./locationUtils";
 
 export interface ParsedBusQuery {
   rawQuery: string;
@@ -132,11 +133,11 @@ export function searchBusesWithParsedQuery(parsed: ParsedBusQuery): MatchedBusRe
 
     // Search stops
     for (let i = 0; i < t.stops.length; i++) {
-      const stopName = t.stops[i].name.toLowerCase();
-      if (originQuery && originIndex === -1 && stopName.includes(originQuery)) {
+      const stop = t.stops[i];
+      if (originQuery && originIndex === -1 && matchesPlace(stop.name, originQuery)) {
         originIndex = i;
       }
-      if (destQuery && originIndex !== -1 && i > originIndex && stopName.includes(destQuery)) {
+      if (destQuery && originIndex !== -1 && i > originIndex && matchesPlace(stop.name, destQuery)) {
         destIndex = i;
       }
     }
@@ -150,7 +151,7 @@ export function searchBusesWithParsedQuery(parsed: ParsedBusQuery): MatchedBusRe
     } else if (!originQuery && destQuery) {
       if (destIndex === -1) {
         // Find if destination stop exists
-        const found = t.stops.findIndex((s) => s.name.toLowerCase().includes(destQuery));
+        const found = t.stops.findIndex((s) => matchesPlace(s.name, destQuery));
         if (found === -1) continue;
         destIndex = found;
         originIndex = 0;

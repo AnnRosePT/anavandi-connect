@@ -1,14 +1,20 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, Suspense } from "react";
+import { useSearchParams } from "next/navigation";
 import { SearchWidget } from "@/components/search/SearchWidget";
 import { BusCard } from "@/components/search/BusCard";
 import { timetableStore } from "@/services/store";
 import { useAuth } from "@/contexts/AuthContext";
 import Link from "next/link";
 
-export default function SearchPage() {
+function SearchPageContent() {
   const { user, role } = useAuth();
+  const searchParams = useSearchParams();
+  const qParam = searchParams.get("q") || "";
+  const fromParam = searchParams.get("from") || (qParam ? qParam : "Trivandrum");
+  const toParam = searchParams.get("to") || (qParam ? "" : "Kannur");
+
   const [featuredTimetables] = useState(() => timetableStore.getAll().slice(0, 3));
   const isPassenger = role === "passenger";
 
@@ -56,7 +62,7 @@ export default function SearchPage() {
       )}
 
       {/* Top Search Hero */}
-      <SearchWidget />
+      <SearchWidget initialOrigin={fromParam} initialDestination={toParam} />
 
       {/* Live Depot Board & Featured Services */}
       <div className="flex flex-col gap-space-md">
@@ -79,5 +85,13 @@ export default function SearchPage() {
         </div>
       </div>
     </div>
+  );
+}
+
+export default function SearchPage() {
+  return (
+    <Suspense fallback={<div className="p-space-lg text-center font-label-md">Loading Search...</div>}>
+      <SearchPageContent />
+    </Suspense>
   );
 }

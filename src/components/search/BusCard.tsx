@@ -3,6 +3,7 @@
 import React from "react";
 import Link from "next/link";
 import { TimetableRecord } from "@/types/timetable";
+import { matchesPlace } from "@/services/locationUtils";
 
 interface BusCardProps {
   timetable: TimetableRecord;
@@ -10,13 +11,73 @@ interface BusCardProps {
   destMatch?: string;
 }
 
+function parseTimeToMinutes(timeStr: string): number | null {
+  if (!timeStr || timeStr === "—" || timeStr.trim() === "") return null;
+  const clean = timeStr.replace("*", "").trim();
+  const match = clean.match(/(\d{1,2})(?::(\d{2}))?\s*(am|pm)?/i);
+  if (!match) return null;
+  let hours = parseInt(match[1], 10);
+  const minutes = match[2] ? parseInt(match[2], 10) : 0;
+  const meridiem = match[3]?.toLowerCase();
+  if (meridiem === "pm" && hours < 12) hours += 12;
+  if (meridiem === "am" && hours === 12) hours = 0;
+  return hours * 60 + minutes;
+}
+
+function formatDurationMinutes(mins: number): string {
+  if (mins <= 0) return "1h 00m";
+  const h = Math.floor(mins / 60);
+  const m = mins % 60;
+  return `${h}h ${m.toString().padStart(2, "0")}m`;
+}
+
 export const BusCard: React.FC<BusCardProps> = ({
   timetable,
   originMatch,
   destMatch,
 }) => {
-  const originStop = timetable.stops[0];
-  const destStop = timetable.stops[timetable.stops.length - 1];
+  // Find matched origin and destination stops
+  let originIndex = 0;
+  let destIndex = timetable.stops.length - 1;
+
+  if (originMatch) {
+    const idx = timetable.stops.findIndex((s) => matchesPlace(s.name, originMatch));
+    if (idx !== -1) originIndex = idx;
+  }
+  if (destMatch) {
+    const idx = timetable.stops.findIndex(
+      (s, i) => i >= originIndex && matchesPlace(s.name, destMatch)
+    );
+    if (idx !== -1) destIndex = idx;
+  }
+
+  const originStop = timetable.stops[originIndex] || timetable.stops[0];
+  const destStop =
+    timetable.stops[destIndex] || timetable.stops[timetable.stops.length - 1];
+
+  const depTime =
+    originStop.departure !== "—" ? originStop.departure : originStop.arrival || "—";
+  const arrTime =
+    destStop.arrival !== "—" ? destStop.arrival : destStop.departure || "—";
+
+  // Segment duration calculation
+  let durationStr = timetable.estimatedDuration;
+  const depM = parseTimeToMinutes(depTime);
+  const arrM = parseTimeToMinutes(arrTime);
+  if (depM !== null && arrM !== null) {
+    let diff = arrM - depM;
+    if (diff < 0) diff += 1440; // overnight
+    if (diff > 0) {
+      durationStr = formatDurationMinutes(diff);
+    }
+  }
+
+  // Segment fare calculation
+  const isSubSegment = originIndex > 0 || destIndex < timetable.stops.length - 1;
+  const haltCount = Math.max(1, destIndex - originIndex);
+  const fare = isSubSegment
+    ? Math.max(35, Math.round(timetable.fareInr * (haltCount / (timetable.stops.length - 1 || 1))))
+    : timetable.fareInr;
 
   const isMinnal = timetable.serviceType === "MINNAL";
   const isSuperFast = timetable.serviceType === "SUPER_FAST";
@@ -60,6 +121,11 @@ export const BusCard: React.FC<BusCardProps> = ({
           <p className="font-label-md text-label-md text-on-surface-variant font-medium">
             Depot: {timetable.depotOrigin}
           </p>
+          {isSubSegment && (
+            <p className="text-xs text-primary font-semibold mt-1">
+              Part of: {timetable.title}
+            </p>
+          )}
         </div>
 
         <div className="mt-space-md pt-space-sm bg-surface-container/50 p-space-xs rounded">
@@ -89,20 +155,20 @@ export const BusCard: React.FC<BusCardProps> = ({
           {/* Departure */}
           <div className="flex flex-col">
             <span className="font-headline-lg text-headline-lg font-extrabold text-primary leading-none">
-              {originStop?.departure || "06:30 AM"}
+              {depTime}
             </span>
             <span className="font-title-md text-title-md font-bold text-on-surface mt-1">
-              {originMatch || originStop?.name || "Origin"}
+              {originStop.name}
             </span>
             <span className="font-label-md text-label-md text-on-surface-variant">
-              {originStop?.platform || "Main Terminal Bay"}
+              {originStop.platform || "Main Terminal Bay"}
             </span>
           </div>
 
           {/* Route Duration Timeline */}
           <div className="flex flex-col items-center justify-center px-space-xs">
             <span className="font-label-md text-label-md text-secondary font-bold uppercase tracking-wider mb-1">
-              {timetable.estimatedDuration} Duration
+              {durationStr} Duration
             </span>
             <div className="w-full flex items-center gap-1">
               <span className="w-2.5 h-2.5 rounded-full bg-primary shrink-0"></span>
@@ -114,20 +180,20 @@ export const BusCard: React.FC<BusCardProps> = ({
               <span className="w-2.5 h-2.5 rounded-full bg-primary shrink-0"></span>
             </div>
             <span className="font-label-md text-label-md text-on-surface-variant mt-1">
-              {timetable.stops.length} Scheduled Halts ({timetable.totalDistanceKm} km)
+              {haltCount} {haltCount === 1 ? "Halt" : "Halts"} ({isSubSegment ? "Segment" : `${timetable.totalDistanceKm} km`})
             </span>
           </div>
 
           {/* Arrival */}
           <div className="flex flex-col md:text-right">
             <span className="font-headline-lg text-headline-lg font-extrabold text-on-surface leading-none">
-              {destStop?.arrival || "03:15 PM"}
+              {arrTime}
             </span>
             <span className="font-title-md text-title-md font-bold text-on-surface mt-1">
-              {destMatch || destStop?.name || "Terminus"}
+              {destStop.name}
             </span>
             <span className="font-label-md text-label-md text-on-surface-variant">
-              {destStop?.platform || "Arrival Terminal"}
+              {destStop.platform || "Arrival Terminal"}
             </span>
           </div>
         </div>
@@ -157,10 +223,10 @@ export const BusCard: React.FC<BusCardProps> = ({
       <div className="p-space-md xl:w-64 bg-surface-container flex flex-col justify-between items-end border-t xl:border-t-0 xl:border-l border-surface-container">
         <div className="text-right w-full">
           <span className="font-label-md text-label-md uppercase text-on-surface-variant font-bold">
-            Standard Tariff
+            {isSubSegment ? "Segment Tariff" : "Standard Tariff"}
           </span>
           <div className="font-headline-lg text-headline-lg font-extrabold text-primary leading-tight">
-            ₹{timetable.fareInr}
+            ₹{fare}
             <span className="font-body-md text-body-md text-on-surface-variant font-normal"> /seat</span>
           </div>
           <span className="px-space-xs py-0.5 rounded bg-secondary-container/40 text-on-secondary-container font-label-md text-label-md font-semibold inline-block mt-0.5">

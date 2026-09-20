@@ -2,10 +2,12 @@
 
 import React, { useState, useEffect, useMemo, Suspense } from "react";
 import { useSearchParams } from "next/navigation";
+import Link from "next/link";
 import { SearchWidget } from "@/components/search/SearchWidget";
 import { BusCard } from "@/components/search/BusCard";
 import { timetableStore } from "@/services/store";
 import { TimetableRecord, ServiceClass } from "@/types/timetable";
+import { matchesPlace } from "@/services/locationUtils";
 
 function SearchResultsContent() {
   const searchParams = useSearchParams();
@@ -25,8 +27,8 @@ function SearchResultsContent() {
   }, []);
 
   const matchingBuses = useMemo(() => {
-    const fromQuery = fromParam.trim().toLowerCase();
-    const toQuery = toParam.trim().toLowerCase();
+    const fromQuery = fromParam.trim();
+    const toQuery = toParam.trim();
 
     const filtered = timetables.filter((t) => {
       if (classParam !== "ALL" && t.serviceType !== classParam) return false;
@@ -35,31 +37,34 @@ function SearchResultsContent() {
       let destIndex = -1;
 
       for (let i = 0; i < t.stops.length; i++) {
-        const name = t.stops[i].name.toLowerCase();
-        if (originIndex === -1 && (name.includes(fromQuery) || fromQuery.includes(name))) {
+        const stop = t.stops[i];
+        if (originIndex === -1 && matchesPlace(stop.name, fromQuery)) {
           originIndex = i;
         }
-        if (originIndex !== -1 && i > originIndex && (name.includes(toQuery) || toQuery.includes(name))) {
+        if (originIndex !== -1 && i > originIndex && matchesPlace(stop.name, toQuery)) {
           destIndex = i;
+          break;
         }
       }
 
       if (originIndex !== -1 && destIndex !== -1) return true;
-      if (
-        t.title.toLowerCase().includes(fromQuery) &&
-        t.title.toLowerCase().includes(toQuery)
-      ) {
+
+      // Also check route origin/destination directly
+      if (matchesPlace(t.origin, fromQuery) && matchesPlace(t.destination, toQuery)) {
         return true;
       }
+
       return false;
     });
 
-    const result = filtered.length > 0 ? filtered : timetables.slice(0, 4);
-
-    return [...result].sort((a, b) => {
+    return [...filtered].sort((a, b) => {
       if (sortBy === "fare") return a.fareInr - b.fareInr;
       if (sortBy === "duration") return a.totalDistanceKm - b.totalDistanceKm;
-      return a.stops[0]?.departure.localeCompare(b.stops[0]?.departure || "") || 0;
+      const getDep = (item: TimetableRecord) => {
+        const stop = item.stops.find((s) => matchesPlace(s.name, fromQuery)) || item.stops[0];
+        return stop?.departure && stop.departure !== "—" ? stop.departure : stop?.arrival || "";
+      };
+      return getDep(a).localeCompare(getDep(b));
     });
   }, [timetables, fromParam, toParam, classParam, sortBy]);
 
@@ -82,7 +87,7 @@ function SearchResultsContent() {
                 Buses from {fromParam} to {toParam}
               </h2>
               <p className="font-label-md text-label-md text-on-surface-variant">
-                Verified against Thampanoor Control Cell &amp; Kannur Depot Waybill logs
+                Verified against KSRTC computerized depot schedule logs
               </p>
             </div>
           </div>
@@ -124,16 +129,63 @@ function SearchResultsContent() {
           </div>
         </div>
 
-        <div className="flex flex-col gap-space-md">
-          {matchingBuses.map((bus) => (
-            <BusCard
-              key={bus.id}
-              timetable={bus}
-              originMatch={fromParam}
-              destMatch={toParam}
-            />
-          ))}
-        </div>
+        {matchingBuses.length === 0 ? (
+          <div className="bg-surface-container-low p-space-xl rounded-xl border border-surface-container text-center flex flex-col items-center justify-center gap-space-sm shadow-sm py-12">
+            <div className="w-16 h-16 rounded-full bg-secondary-container/50 text-secondary flex items-center justify-center mb-2">
+              <span className="material-symbols-outlined text-3xl">directions_bus</span>
+            </div>
+            <h3 className="font-headline-sm text-headline-sm font-bold text-on-surface">
+              No Direct Services Found
+            </h3>
+            <p className="font-body-md text-body-md text-on-surface-variant max-w-md">
+              No digitized bus route currently connects <strong className="text-on-surface">{fromParam}</strong> directly to <strong className="text-on-surface">{toParam}</strong> in our database.
+            </p>
+            <div className="mt-4 flex flex-wrap items-center justify-center gap-2">
+              <span className="text-xs uppercase font-bold text-on-surface-variant tracking-wider">Try popular routes:</span>
+              <Link
+                href="/search/results?from=Trivandrum&to=Kannur"
+                className="px-3 py-1 bg-surface-container hover:bg-surface-container-high rounded text-xs font-bold text-primary transition-colors"
+              >
+                Trivandrum → Kannur
+              </Link>
+              <Link
+                href="/search/results?from=Thrissur&to=Ernakulam"
+                className="px-3 py-1 bg-surface-container hover:bg-surface-container-high rounded text-xs font-bold text-primary transition-colors"
+              >
+                Thrissur → Ernakulam
+              </Link>
+              <Link
+                href="/search/results?from=Trivandrum&to=Palakkad"
+                className="px-3 py-1 bg-surface-container hover:bg-surface-container-high rounded text-xs font-bold text-primary transition-colors"
+              >
+                Trivandrum → Palakkad
+              </Link>
+              <Link
+                href="/search/results?from=Trivandrum&to=Munnar"
+                className="px-3 py-1 bg-surface-container hover:bg-surface-container-high rounded text-xs font-bold text-primary transition-colors"
+              >
+                Trivandrum → Munnar
+              </Link>
+              <Link
+                href="/search/results?from=Kannur&to=Trivandrum"
+                className="px-3 py-1 bg-surface-container hover:bg-surface-container-high rounded text-xs font-bold text-primary transition-colors"
+              >
+                Kannur → Trivandrum (Southbound)
+              </Link>
+            </div>
+          </div>
+        ) : (
+          <div className="flex flex-col gap-space-md">
+            {matchingBuses.map((bus) => (
+              <BusCard
+                key={bus.id}
+                timetable={bus}
+                originMatch={fromParam}
+                destMatch={toParam}
+              />
+            ))}
+          </div>
+        )}
       </section>
     </div>
   );
